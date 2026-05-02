@@ -8,8 +8,8 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --M:#7A1C2E;--M2:#A02040;--M3:#4A0D1C;
-  --G:#C9973A;--G2:#E8B84B;--GP:#FBF4E6;
+  --M:#7A1C2E;--M2:#A02040;--M3:#4A0D1C;--M4:#2C0518;
+  --G:#C9973A;--G2:#E8B84B;--GP:#FBF4E6;--GB:#FFF9EE;
   --D:#1A0A00;--D2:#3D1F0A;--D3:#6B3E20;
   --S:#F5F0E8;--S2:#E8DFC8;--S3:#D0C4A8;
   --W:#FFFFFF;
@@ -17,808 +17,720 @@
   --WN:#7A4F00;--WNB:#FFF3DC;--WNR:#F5D080;
   --ER:#8B1A1A;--ERB:#FDEAEA;--ERR:#F0A0A0;
   --BL:#1A3A6B;--BLB:#EAF0FB;--BLR:#B0C8F0;
+  --sidebar:240px;
 }
-body{font-family:'Outfit',sans-serif;background:#1A1A1A;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
 
-/* Phone Shell */
-.phone{width:375px;height:812px;background:var(--M3);border-radius:44px;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.6);flex-shrink:0}
-.phone-inner{width:100%;height:100%;overflow:hidden;position:relative}
+html,body{height:100%;font-family:'Outfit',sans-serif}
+body{background:var(--M4);color:#fff;min-height:100vh}
 
-/* Notch */
-.notch{height:44px;background:var(--M3);display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;flex-shrink:0;position:relative;z-index:10}
-.notch-pill{width:120px;height:34px;background:#000;border-radius:20px;display:flex;align-items:center;justify-content:space-between;padding:0 12px}
-.notch-time{font-size:12px;font-weight:600;color:#fff}
-.notch-icons{display:flex;gap:5px;font-size:11px;color:#fff}
+/* ── LAYOUT ─────────────────────────────── */
+.app-shell{display:flex;height:100vh;overflow:hidden}
 
-/* Screens */
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s}
-.screen.active{opacity:1;pointer-events:all}
+/* Sidebar — desktop only */
+.sidebar{width:var(--sidebar);background:var(--M3);border-right:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column);flex-shrink:0;overflow-y:auto;transition:transform .3s}
+.sb-logo{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-brand{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
+.sb-sub{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+.sb-user{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-av{width:36px;height:36px;border-radius:50%;background:var(--G);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--D);flex-shrink:0}
+.sb-name{font-size:12px;color:rgba(255,255,255,.85);font-weight:500}
+.sb-role{font-size:9px;color:rgba(255,255,255,.35)}
+.sb-section{padding:14px 18px 4px;font-size:9px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:2px;text-transform:uppercase}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 14px;margin:1px 8px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,.5);font-size:13px;transition:all .15s;position:relative}
+.sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.9)}
+.sb-item.active{background:var(--G);color:var(--D);font-weight:600}
+.sb-item .ic{font-size:16px;width:18px;text-align:center;flex-shrink:0}
+.sb-badge{margin-left:auto;font-size:9px;padding:2px 7px;border-radius:20px;background:var(--ER);color:#fff;font-weight:700}
+.sb-foot{margin-top:auto;padding:16px 18px;border-top:1px solid rgba(255,255,255,.07);font-size:10px;color:rgba(255,255,255,.25)}
 
-/* Status bar area */
-.status-bar{height:44px;flex-shrink:0}
+/* Main content */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 
-/* Scrollable content */
-.scroll-content{flex:1;overflow-y:auto;-ms-overflow-style:none;scrollbar-width:none}
-.scroll-content::-webkit-scrollbar{display:none}
+/* Top bar — desktop */
+.topbar{background:var(--M3);border-bottom:1px solid rgba(255,255,255,.08);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.tb-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#fff}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-notif{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;position:relative;border:1px solid rgba(255,255,255,.1)}
+.ndot{width:8px;height:8px;background:var(--ER);border-radius:50%;position:absolute;top:5px;right:5px;border:1.5px solid var(--M3)}
+.tb-btn{background:var(--G);color:var(--D);border:none;border-radius:9px;padding:9px 18px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
+.hamburger{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px}
 
-/* Bottom Nav */
-.bottom-nav{height:82px;background:var(--M3);border-top:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-around;padding:0 8px 16px;flex-shrink:0}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:8px 12px;border-radius:12px;transition:all .2s;min-width:50px}
-.nav-item.active{background:rgba(201,151,58,.15)}
-.nav-ico{font-size:22px}
-.nav-lbl{font-size:9px;font-weight:500;color:rgba(255,255,255,.4);letter-spacing:.3px}
-.nav-item.active .nav-lbl{color:var(--G2);font-weight:600}
+/* Page content */
+.page-content{flex:1;overflow-y:auto;padding:24px}
+.page-content::-webkit-scrollbar{width:4px}
+.page-content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
 
-/* Shared components */
-.screen-header{padding:16px 20px 12px;flex-shrink:0}
-.sh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-.sh-back{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;cursor:pointer}
-.sh-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff}
-.sh-action{width:36px;height:36px;border-radius:50%;background:var(--G);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer}
-.sh-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}
+/* Pages */
+.page{display:none}.page.active{display:block}
 
+/* ── COMPONENTS ─────────────────────────── */
 /* Cards */
-.white-card{background:var(--W);border-radius:16px;padding:16px;margin:0 16px 12px}
-.dark-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:14px;margin:0 16px 10px}
+.card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px;margin-bottom:16px}
+.card-w{background:var(--W);border-radius:16px;padding:18px;margin-bottom:14px}
+.card-hd{font-size:13px;font-weight:600;color:#fff;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.card-hd-w{font-size:13px;font-weight:600;color:var(--D);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.card-lk{font-size:11px;color:var(--G);cursor:pointer;font-weight:400}
 
-/* KPI Grid */
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;margin-bottom:14px}
-.kpi-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px}
-.kpi-lbl{font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
-.kpi-val{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:#fff;line-height:1}
-.kpi-delta{font-size:10px;color:var(--G2);margin-top:4px}
+/* KPI grid */
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.kpi{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--G)}
+.kpi-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+.kpi-val{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:#fff;line-height:1}
+.kpi-delta{font-size:11px;margin-top:5px;color:var(--G2)}
+.kpi-icon{position:absolute;top:14px;right:14px;font-size:20px;opacity:.15}
+.kbar{height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:10px}
+.kfill{height:100%;border-radius:2px;background:var(--G)}
 
-/* Section title */
-.sec-title{font-size:13px;font-weight:600;color:#fff;padding:0 16px;margin-bottom:10px}
+/* 2-col grid */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
 
 /* Badges */
-.badge{display:inline-flex;align-items:center;font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px}
+.b{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
 .b-ok{background:var(--OKB);color:var(--OK);border:1px solid var(--OKR)}
 .b-w{background:var(--WNB);color:var(--WN);border:1px solid var(--WNR)}
 .b-e{background:var(--ERB);color:var(--ER);border:1px solid var(--ERR)}
 .b-g{background:var(--GP);color:var(--D2);border:1px solid var(--S3)}
 .b-bl{background:var(--BLB);color:var(--BL);border:1px solid var(--BLR)}
-
-/* Form elements */
-.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.fg label{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.8px;text-transform:uppercase}
-.fg input,.fg select,.fg textarea{border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:11px 14px;font-family:'Outfit',sans-serif;font-size:13px;color:#fff;background:rgba(255,255,255,.08);outline:none;width:100%}
-.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.3)}
-.fg select option{background:#2A1010;color:#fff}
-.fg textarea{resize:vertical;min-height:70px}
-.fg-white label{color:var(--D3)}
-.fg-white input,.fg-white select,.fg-white textarea{background:var(--S);color:var(--D);border:1px solid var(--S2);color:var(--D)}
-.fg-white input::placeholder{color:var(--D3)}
-
-/* Buttons */
-.btn-primary{width:100%;padding:14px;background:var(--G);color:var(--D);border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.3px}
-.btn-secondary{width:100%;padding:12px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:12px;font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer}
-.btn-danger{width:100%;padding:12px;background:var(--ERB);color:var(--ER);border:1px solid var(--ERR);border-radius:12px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer}
-.btn-maroon{width:100%;padding:14px;background:var(--M);color:#fff;border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
-
-/* Row items */
-.row-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)}
-.row-item:last-child{border:none;padding-bottom:0}
-.row-item-w{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--S)}
-.row-item-w:last-child{border:none;padding-bottom:0}
-.ri-left{display:flex;align-items:center;gap:10px}
-.ri-ico{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.ri-ico-g{background:var(--GP);border:1px solid var(--S3)}
-.ri-name{font-size:13px;font-weight:500;color:#fff}
-.ri-name-d{font-size:13px;font-weight:500;color:var(--D)}
-.ri-sub{font-size:10px;color:rgba(255,255,255,.45);margin-top:1px}
-.ri-sub-d{font-size:10px;color:var(--D3);margin-top:1px}
+.b-gold{background:rgba(201,151,58,.2);color:var(--G2);border:1px solid rgba(201,151,58,.3)}
 
 /* Toggle */
-.tog{width:44px;height:24px;background:rgba(255,255,255,.2);border-radius:12px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.tog{width:44px;height:24px;background:rgba(255,255,255,.15);border-radius:12px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
 .tog.on{background:var(--OK)}
-.tog::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tog::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
 .tog.on::after{left:22px}
 
-/* Calendar */
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:10px}
-.cal-day{height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;cursor:pointer}
-.cal-day.empty{background:transparent;cursor:default}
-.cal-day.avail{background:rgba(45,106,63,.25);color:#7AE09A;border:1px solid rgba(45,106,63,.3)}
-.cal-day.booked{background:rgba(139,26,26,.3);color:#F0A0A0;border:1px solid rgba(139,26,26,.3)}
-.cal-day.offline{background:rgba(88,32,160,.25);color:#C8A0E8;border:1px solid rgba(88,32,160,.3)}
-.cal-day.today{border:2px solid var(--G)!important}
-.cal-hdr-day{font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-align:center;letter-spacing:.5px;padding-bottom:6px}
+/* Buttons */
+.btn-primary{background:var(--G);color:var(--D);border:none;border-radius:10px;padding:12px 24px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary:hover{background:var(--G2)}
+.btn-secondary{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 20px;font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer}
+.btn-danger{background:var(--ERB);color:var(--ER);border:1px solid var(--ERR);border-radius:10px;padding:10px 20px;font-family:'Outfit',sans-serif;font-size:13px;cursor:pointer}
+.btn-maroon{background:var(--M);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
 
-/* Notification card */
-.notif-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;margin:0 16px 10px;border-left:3px solid var(--G)}
-.notif-card.urgent{border-left-color:var(--ER)}
-.nc-top{display:flex;justify-content:space-between;margin-bottom:5px}
-.nc-name{font-size:13px;font-weight:600;color:#fff}
-.nc-time{font-size:10px;color:rgba(255,255,255,.4)}
-.nc-detail{font-size:11px;color:rgba(255,255,255,.6);line-height:1.5;margin-bottom:10px}
-.nc-amount{font-size:14px;font-weight:700;color:var(--G2);margin-bottom:10px}
-.nc-actions{display:flex;gap:8px}
-.nc-btn{flex:1;padding:8px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:'Outfit',sans-serif;text-align:center}
-.nc-accept{background:var(--OKB);color:var(--OK)}
-.nc-reject{background:var(--ERB);color:var(--ER)}
-.nc-wa{background:#E7F9EC;color:#1A7A35}
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.4);padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
+.tbl td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.05);color:#fff;vertical-align:middle}
+.tbl tr:last-child td{border:none}
+.tbl tr:hover td{background:rgba(255,255,255,.04)}
+.tbl-wrap{overflow-x:auto}
+
+/* Form */
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.fg label{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.8px;text-transform:uppercase}
+.fg input,.fg select,.fg textarea{border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:11px 14px;font-family:'Outfit',sans-serif;font-size:13px;color:#fff;background:rgba(255,255,255,.08);outline:none;width:100%;transition:border .15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--G)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.3)}
+.fg select option{background:#2A1010;color:#fff}
+.fg textarea{resize:vertical;min-height:80px}
+.frow2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+/* Row items */
+.row-item{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.row-item:last-child{border:none;padding-bottom:0}
+.ri-left{display:flex;align-items:center;gap:12px}
+.ri-ico{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ri-name{font-size:13px;font-weight:500;color:#fff}
+.ri-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
+
+/* Tabs */
+.tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:18px}
+.tab{padding:9px 18px;font-size:12.5px;color:rgba(255,255,255,.4);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;font-family:'Outfit',sans-serif}
+.tab.active{color:#fff;border-color:var(--G);font-weight:500}
+
+/* Quick action cards */
+.qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.qa-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:all .2s}
+.qa-card:hover{background:rgba(255,255,255,.12);border-color:var(--G);transform:translateY(-2px)}
+.qa-card.alert{background:rgba(201,151,58,.1);border-color:rgba(201,151,58,.3)}
+.qa-ico{font-size:28px;margin-bottom:8px}
+.qa-lbl{font-size:11px;color:rgba(255,255,255,.6);font-weight:500}
+
+/* Venue cards */
+.venue-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;margin-bottom:14px;transition:all .2s}
+.venue-card:hover{border-color:var(--G);box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.vc-head{padding:14px 18px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center}
+.vc-name{font-size:14px;font-weight:600;color:#fff}
+.vc-type{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
+.vc-body{padding:14px 18px}
+.vc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.vc-tag{font-size:10px;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.1)}
+.vc-pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.vc-price-item{background:rgba(255,255,255,.05);border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,.08)}
+.vc-price-season{font-size:9px;color:rgba(255,255,255,.4);font-weight:600;text-transform:uppercase;margin-bottom:4px}
+.vc-price-val{font-size:14px;font-weight:700;color:var(--G2)}
+.vc-actions{display:flex;gap:8px}
+.vc-btn{padding:8px 14px;border-radius:9px;font-size:11px;font-weight:500;cursor:pointer;border:none;font-family:'Outfit',sans-serif;transition:all .15s}
+.vc-cal{background:rgba(45,106,63,.2);color:#7AE09A}
+.vc-price-btn{background:rgba(201,151,58,.15);color:var(--G2)}
+.vc-fac{background:rgba(201,151,58,.15);color:var(--G2)}
+.vc-photo{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7)}
+
+/* Calendar */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal-hdr{font-size:10px;font-weight:700;color:rgba(255,255,255,.35);text-align:center;padding-bottom:8px;letter-spacing:.5px}
+.cal-day{height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.cal-day:hover{opacity:.8}
+.cd-avail{background:rgba(45,106,63,.2);color:#7AE09A;border:1px solid rgba(45,106,63,.25)}
+.cd-booked{background:rgba(139,26,26,.25);color:#F0A0A0;border:1px solid rgba(139,26,26,.25)}
+.cd-offline{background:rgba(88,32,160,.2);color:#C8A0E8;border:1px solid rgba(88,32,160,.2)}
+.cd-today{border:2px solid var(--G)!important}
+
+/* Booking request card */
+.req-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;margin-bottom:12px;border-left:3px solid var(--G);transition:all .2s}
+.req-card:hover{background:rgba(255,255,255,.1)}
+.req-card.urgent{border-left-color:var(--ER)}
+.req-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.req-name{font-size:14px;font-weight:600;color:#fff}
+.req-time{font-size:10px;color:rgba(255,255,255,.4)}
+.req-detail{font-size:12px;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:8px}
+.req-amount{font-size:15px;font-weight:700;color:var(--G2);margin-bottom:12px}
+.req-actions{display:flex;gap:8px}
+.ra-btn{padding:8px 16px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:'Outfit',sans-serif}
+.ra-accept{background:var(--OKB);color:var(--OK)}
+.ra-reject{background:var(--ERB);color:var(--ER)}
+.ra-wa{background:#E7F9EC;color:#1A7A35}
 
 /* Season card */
-.season-bar{height:4px;border-radius:2px;margin-top:2px}
+.season-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.season-bar{height:4px;border-radius:2px;margin-top:6px}
 
 /* Photo grid */
-.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:0 16px;margin-bottom:12px}
-.photo-item{aspect-ratio:1;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:24px;position:relative;cursor:pointer;border:1px solid rgba(255,255,255,.1)}
-.photo-item.add-photo{border:1.5px dashed var(--G);background:rgba(201,151,58,.08)}
+.photo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.photo-item{aspect-ratio:1;border-radius:10px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;border:1px solid rgba(255,255,255,.1);transition:all .2s}
+.photo-item:hover{border-color:var(--G)}
+.photo-add{border:1.5px dashed rgba(201,151,58,.5);background:rgba(201,151,58,.06)}
 
-/* Earning chart bar */
-.earn-bar{display:flex;align-items:flex-end;gap:5px;height:80px;padding-top:8px;margin:0 4px}
-.eb-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.eb-bar{width:100%;border-radius:4px 4px 0 0;min-height:4px;background:var(--G)}
-.eb-lbl{font-size:8px;color:rgba(255,255,255,.4);font-weight:500}
-
-/* Splash */
-.splash-bg{background:linear-gradient(160deg,var(--M3) 0%,#2C0A18 50%,#1A0A00 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 30px;text-align:center}
-.splash-diya{font-size:72px;margin-bottom:20px;animation:glow 2s ease-in-out infinite alternate}
-@keyframes glow{from{filter:drop-shadow(0 0 8px rgba(201,151,58,.4))}to{filter:drop-shadow(0 0 20px rgba(201,151,58,.8))}}
-.splash-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#fff;margin-bottom:6px}
-.splash-sub{font-size:12px;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:50px}
-.splash-tagline{font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:50px}
-
-/* Login */
-.login-bg{background:linear-gradient(160deg,var(--M3) 0%,#2C0A18 100%);padding:30px 24px}
-.otp-boxes{display:flex;gap:10px;justify-content:center;margin:16px 0}
-.otp-box{width:48px;height:56px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff}
-.otp-box.filled{border-color:var(--G);background:rgba(201,151,58,.15);color:var(--G2)}
-
-/* Progress indicator */
-.step-dots{display:flex;gap:6px;justify-content:center;margin-bottom:20px}
-.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2)}
-.dot.active{background:var(--G);width:24px;border-radius:4px}
-
-/* info rows */
-.info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07)}
-.info-row:last-child{border:none}
-.ir-label{font-size:11px;color:rgba(255,255,255,.5)}
-.ir-value{font-size:12px;font-weight:500;color:#fff}
-.ir-edit{font-size:11px;color:var(--G);cursor:pointer;font-weight:500}
-
-/* Pill tabs */
-.pill-tabs{display:flex;gap:8px;padding:0 16px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none}
-.pill-tabs::-webkit-scrollbar{display:none}
-.pill-tab{flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);background:transparent;transition:all .15s}
-.pill-tab.active{background:var(--G);color:var(--D);border-color:var(--G);font-weight:600}
-
-/* Venue list card */
-.venue-list-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;margin:0 16px 10px;overflow:hidden;cursor:pointer;transition:all .2s}
-.venue-list-card:hover{border-color:var(--G)}
-.vlc-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07)}
-.vlc-name{font-size:13px;font-weight:600;color:#fff}
-.vlc-type{font-size:9px;color:rgba(255,255,255,.5);margin-top:2px}
-.vlc-body{padding:12px 14px}
-.vlc-price-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.vlc-price{font-size:15px;font-weight:700;color:var(--G2)}
-.vlc-actions{display:flex;gap:6px;margin-top:10px}
-.vlc-btn{flex:1;padding:7px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;border:none;font-family:'Outfit',sans-serif;text-align:center}
-.vlc-cal{background:rgba(45,106,63,.2);color:#7AE09A}
-.vlc-price-btn{background:rgba(201,151,58,.2);color:var(--G2)}
-.vlc-edit{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7)}
-
-/* Earnings */
-.earn-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;margin-bottom:14px}
-.es-card{border-radius:14px;padding:14px;text-align:center}
-.es-lbl{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;opacity:.7}
-.es-val{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;line-height:1}
+/* Earnings chart */
+.earn-bars{display:flex;align-items:flex-end;gap:8px;height:100px;padding-top:10px}
+.eb-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.eb-bar{width:100%;border-radius:5px 5px 0 0;min-height:4px;background:rgba(201,151,58,.5);transition:height .5s}
+.eb-bar.peak{background:var(--G2)}
+.eb-lbl{font-size:9px;color:rgba(255,255,255,.35);font-weight:500}
 
 /* Profile */
-.profile-hero{display:flex;flex-direction:column;align-items:center;padding:20px 16px 16px}
-.profile-avatar{width:80px;height:80px;border-radius:50%;background:var(--G);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:var(--D);margin-bottom:12px;border:3px solid rgba(255,255,255,.2)}
-.profile-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:4px}
-.profile-type{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1px}
-.profile-stats{display:flex;gap:0;margin-top:16px;width:100%}
-.ps-item{flex:1;text-align:center;padding:12px 8px;background:rgba(255,255,255,.06);border-right:1px solid rgba(255,255,255,.1)}
-.ps-item:first-child{border-radius:12px 0 0 12px}
-.ps-item:last-child{border:none;border-radius:0 12px 12px 0}
-.ps-val{font-size:18px;font-weight:700;color:#fff;font-family:'Cormorant Garamond',serif}
-.ps-lbl{font-size:9px;color:rgba(255,255,255,.4);margin-top:2px}
+.profile-hero{display:flex;align-items:center;gap:20px;padding:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;margin-bottom:18px}
+.ph-avatar{width:72px;height:72px;border-radius:50%;background:var(--G);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--D);flex-shrink:0;border:3px solid rgba(255,255,255,.15)}
+.ph-stats{display:flex;gap:24px;margin-top:10px}
+.ph-stat{text-align:center}
+.ph-val{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#fff}
+.ph-lbl{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* Alert banner */
+.alert-banner{border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.ab-err{background:rgba(139,26,26,.2);border:1px solid rgba(240,160,160,.25)}
+.ab-ok{background:rgba(45,106,63,.15);border:1px solid rgba(168,213,181,.25)}
+.ab-warn{background:rgba(201,151,58,.12);border:1px solid rgba(201,151,58,.25)}
+
+/* Splash/Auth pages */
+.auth-page{min-height:100vh;background:linear-gradient(160deg,var(--M3) 0%,var(--M4) 60%,#0A0500 100%);display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-box{width:100%;max-width:420px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:32px;backdrop-filter:blur(10px)}
+
+/* Add venue dashed */
+.add-venue-dashed{border:2px dashed rgba(201,151,58,.35);border-radius:16px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px}
+.add-venue-dashed:hover{background:rgba(201,151,58,.06);border-color:rgba(201,151,58,.6)}
+
+/* Pill tabs */
+.pill-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.pill{padding:7px 18px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);background:transparent;transition:all .15s}
+.pill.active{background:var(--G);color:var(--D);border-color:var(--G);font-weight:600}
+
+/* ── MOBILE RESPONSIVE ──────────────────── */
+@media(max-width:768px){
+  .sidebar{position:fixed;left:0;top:0;bottom:0;z-index:200;transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .hamburger{display:block}
+  .kgrid{grid-template-columns:1fr 1fr}
+  .g2,.g3{grid-template-columns:1fr}
+  .qa-grid{grid-template-columns:repeat(2,1fr)}
+  .frow2,.frow3{grid-template-columns:1fr}
+  .photo-grid{grid-template-columns:repeat(3,1fr)}
+  .vc-pricing{grid-template-columns:1fr 1fr}
+  .topbar{padding:12px 16px}
+  .page-content{padding:16px}
+  .overlay{display:block}
+}
+@media(min-width:769px){
+  .overlay{display:none!important}
+}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:190}
+
+/* Auth-only screens */
+.auth-screen{display:none;position:fixed;inset:0;z-index:300}
+.auth-screen.active{display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--M3),var(--M4))}
 </style>
 </head>
 <body>
 
-<div style="display:flex;flex-direction:column;align-items:center;gap:20px">
-
-<!-- App Title -->
-<div style="text-align:center;color:#fff">
-  <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:#fff;margin-bottom:4px">🏛 Vivah Odisha</div>
-  <div style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase">Venue Owner App</div>
+<!-- Auth Screens (overlay) -->
+<div class="auth-screen active" id="auth-splash">
+  <div class="auth-box" style="text-align:center">
+    <div style="font-size:64px;margin-bottom:16px;animation:glow 2s ease-in-out infinite alternate">🪔</div>
+    <style>@keyframes glow{from{filter:drop-shadow(0 0 8px rgba(201,151,58,.4))}to{filter:drop-shadow(0 0 24px rgba(201,151,58,.9))}}</style>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:#fff;margin-bottom:4px">Vivah Odisha</div>
+    <div style="font-size:10px;color:rgba(255,255,255,.4);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">ବିବାହ ଓଡ଼ିଶା</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.4);margin-bottom:8px">Owner Portal</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.4);line-height:1.8;margin-bottom:32px">Manage your mandap, hotel & banquet hall<br>bookings from anywhere — mobile or desktop</div>
+    <button class="btn-primary" style="width:100%;margin-bottom:10px;font-size:14px;padding:14px" onclick="showAuth('login')">Owner Login →</button>
+    <button class="btn-secondary" style="width:100%" onclick="showAuth('login')">Register Your Venue</button>
+    <div style="font-size:10px;color:rgba(255,255,255,.25);margin-top:20px">Vivah Odisha Owner App v2.0</div>
+  </div>
 </div>
 
-<!-- Screen Selector -->
-<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:800px">
-  <button onclick="showScreen('splash')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Splash</button>
-  <button onclick="showScreen('login')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Login</button>
-  <button onclick="showScreen('otp')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">OTP</button>
-  <button onclick="showScreen('dashboard')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:var(--G);color:var(--D);border:1px solid var(--G);font-weight:600">Dashboard</button>
-  <button onclick="showScreen('venues')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">My Venues</button>
-  <button onclick="showScreen('addvenue')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Add Venue</button>
-  <button onclick="showScreen('calendar')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Calendar</button>
-  <button onclick="showScreen('pricing')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Pricing</button>
-  <button onclick="showScreen('facilities')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Facilities</button>
-  <button onclick="showScreen('photos')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Photos</button>
-  <button onclick="showScreen('requests')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Requests</button>
-  <button onclick="showScreen('earnings')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Earnings</button>
-  <button onclick="showScreen('profile')" style="padding:7px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Profile</button>
+<div class="auth-screen" id="auth-login">
+  <div class="auth-box">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:36px;margin-bottom:10px">🏛</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:4px">Welcome Back</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.4)">Login to your Owner Account</div>
+    </div>
+    <div class="fg"><label>Mobile Number</label><input type="tel" placeholder="+91 98765 43210" value="+91 98765 43210"></div>
+    <div class="fg"><label>Password</label><input type="password" placeholder="Enter password" value="••••••••"></div>
+    <div style="text-align:right;margin-bottom:20px"><span style="font-size:12px;color:var(--G);cursor:pointer">Forgot Password?</span></div>
+    <button class="btn-primary" style="width:100%;margin-bottom:12px;font-size:14px;padding:14px" onclick="enterApp()">Login →</button>
+    <button class="btn-secondary" style="width:100%;margin-bottom:16px" onclick="showAuth('otp')">📱 Login with OTP</button>
+    <div style="text-align:center;font-size:12px;color:rgba(255,255,255,.4)">Don't have an account? <span style="color:var(--G);cursor:pointer">Register</span></div>
+  </div>
 </div>
 
-<!-- Phone -->
-<div class="phone">
-  <div class="phone-inner">
-
-  <!-- ═══ SPLASH ═══ -->
-  <div class="screen active splash-bg" id="scr-splash">
-    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 30px;text-align:center">
-      <div class="splash-diya">🪔</div>
-      <div class="splash-title">Vivah Odisha</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:40px">ବିବାହ ଓଡ଼ିଶା</div>
-      <div style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.8;margin-bottom:50px;max-width:260px">Manage your mandap, hotel & banquet hall bookings from one powerful app</div>
-      <div style="display:flex;flex-direction:column;gap:12px;width:100%">
-        <button class="btn-primary" onclick="showScreen('login')">Owner Login →</button>
-        <button class="btn-secondary" onclick="showScreen('login')">Register Your Venue</button>
-      </div>
-      <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:24px">Vivah Odisha · Owner App v1.0</div>
+<div class="auth-screen" id="auth-otp">
+  <div class="auth-box">
+    <button onclick="showAuth('login')" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:12px;margin-bottom:24px">← Back</button>
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:48px;margin-bottom:12px">🔐</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:8px">Verify OTP</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.4)">Sent to <strong style="color:#fff">+91 98765 43210</strong></div>
     </div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-bottom:24px">
+      <div style="width:52px;height:58px;background:rgba(201,151,58,.15);border:1.5px solid var(--G);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--G2)">3</div>
+      <div style="width:52px;height:58px;background:rgba(201,151,58,.15);border:1.5px solid var(--G);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--G2)">7</div>
+      <div style="width:52px;height:58px;background:rgba(201,151,58,.15);border:1.5px solid var(--G);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--G2)">2</div>
+      <div style="width:52px;height:58px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;color:rgba(255,255,255,.2)">_</div>
+      <div style="width:52px;height:58px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;color:rgba(255,255,255,.2)">_</div>
+      <div style="width:52px;height:58px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;color:rgba(255,255,255,.2)">_</div>
+    </div>
+    <button class="btn-primary" style="width:100%;margin-bottom:12px;font-size:14px;padding:14px" onclick="enterApp()">Verify & Login →</button>
+    <div style="text-align:center;font-size:12px;color:rgba(255,255,255,.4)">Didn't receive? <span style="color:var(--G);cursor:pointer">Resend in 0:42</span></div>
   </div>
+</div>
 
-  <!-- ═══ LOGIN ═══ -->
-  <div class="screen" id="scr-login" style="background:linear-gradient(160deg,var(--M3) 0%,#1A0A00 100%)">
-    <div style="height:50px;flex-shrink:0"></div>
-    <div class="scroll-content" style="padding:20px 24px">
-      <div style="text-align:center;margin-bottom:36px">
-        <div style="font-size:40px;margin-bottom:12px">🏛</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:6px">Welcome Back</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.5)">Login to your Owner Account</div>
-      </div>
-      <div class="fg">
-        <label>Mobile Number</label>
-        <input type="tel" placeholder="+91 98765 43210" value="+91 98765 43210">
-      </div>
-      <div class="fg">
-        <label>Password</label>
-        <input type="password" placeholder="Enter your password" value="••••••••">
-      </div>
-      <div style="text-align:right;margin-bottom:24px">
-        <span style="font-size:12px;color:var(--G);cursor:pointer">Forgot Password?</span>
-      </div>
-      <button class="btn-primary" onclick="showScreen('dashboard')" style="margin-bottom:14px">Login →</button>
-      <div style="text-align:center;font-size:12px;color:rgba(255,255,255,.4)">Don't have an account? <span style="color:var(--G);cursor:pointer">Register here</span></div>
-      <div style="text-align:center;margin-top:20px;font-size:11px;color:rgba(255,255,255,.3)">Or login with OTP</div>
-      <button class="btn-secondary" onclick="showScreen('otp')" style="margin-top:10px">📱 Send OTP to Mobile</button>
+<!-- Overlay for mobile sidebar -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- Main App Shell -->
+<div class="app-shell" id="app-shell" style="display:none">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-brand">🪔 Vivah Odisha</div>
+      <div class="sb-sub">Owner Portal</div>
     </div>
-  </div>
-
-  <!-- ═══ OTP ═══ -->
-  <div class="screen" id="scr-otp" style="background:linear-gradient(160deg,var(--M3) 0%,#1A0A00 100%)">
-    <div style="height:50px;flex-shrink:0"></div>
-    <div class="scroll-content" style="padding:20px 24px">
-      <button class="sh-back" onclick="showScreen('login')" style="margin-bottom:20px">←</button>
-      <div style="text-align:center;margin-bottom:32px">
-        <div style="font-size:48px;margin-bottom:14px">🔐</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:8px">Verify OTP</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.5);line-height:1.6">We sent a 6-digit OTP to<br><strong style="color:#fff">+91 98765 43210</strong></div>
-      </div>
-      <div class="otp-boxes">
-        <div class="otp-box filled">3</div>
-        <div class="otp-box filled">7</div>
-        <div class="otp-box filled">2</div>
-        <div class="otp-box">_</div>
-        <div class="otp-box">_</div>
-        <div class="otp-box">_</div>
-      </div>
-      <button class="btn-primary" onclick="showScreen('dashboard')" style="margin-bottom:16px">Verify & Login →</button>
-      <div style="text-align:center;font-size:12px;color:rgba(255,255,255,.4)">Didn't receive? <span style="color:var(--G);cursor:pointer">Resend in 0:42</span></div>
+    <div class="sb-user">
+      <div class="sb-av">ML</div>
+      <div><div class="sb-name">Mayfair Lagoon</div><div class="sb-role">Hotel Owner · Khordha</div></div>
     </div>
-  </div>
+    <div class="sb-section">Main</div>
+    <div class="sb-item active" onclick="nav(this,'dashboard')"><span class="ic">🏠</span> Dashboard</div>
+    <div class="sb-item" onclick="nav(this,'venues')"><span class="ic">🏛</span> My Venues</div>
+    <div class="sb-item" onclick="nav(this,'requests')"><span class="ic">📋</span> Booking Requests <span class="sb-badge">5</span></div>
+    <div class="sb-section">Manage</div>
+    <div class="sb-item" onclick="nav(this,'calendar')"><span class="ic">📅</span> Availability Calendar</div>
+    <div class="sb-item" onclick="nav(this,'pricing')"><span class="ic">💰</span> Seasonal Pricing</div>
+    <div class="sb-item" onclick="nav(this,'facilities')"><span class="ic">✅</span> Facilities</div>
+    <div class="sb-item" onclick="nav(this,'photos')"><span class="ic">📸</span> Photos & 360°</div>
+    <div class="sb-section">Finance</div>
+    <div class="sb-item" onclick="nav(this,'earnings')"><span class="ic">₹</span> My Earnings</div>
+    <div class="sb-section">Account</div>
+    <div class="sb-item" onclick="nav(this,'profile')"><span class="ic">👤</span> Profile & Settings</div>
+    <div class="sb-item" onclick="showAuth('splash')"><span class="ic">🚪</span> Logout</div>
+    <div class="sb-foot">vivah-odisha.in · v2.0 · 2026</div>
+  </aside>
 
-  <!-- ═══ DASHBOARD ═══ -->
-  <div class="screen" id="scr-dashboard" style="background:var(--M3)">
-    <div class="notch">
-      <div class="notch-pill">
-        <span class="notch-time">9:41</span>
-        <span class="notch-icons">📶 🔋</span>
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <div class="tb-title" id="page-title">Dashboard</div>
+      </div>
+      <div class="tb-right">
+        <div class="tb-notif">🔔<div class="ndot"></div></div>
+        <span style="font-size:12px;color:rgba(255,255,255,.5)">Mayfair Lagoon Hotel</span>
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--G);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--D)">ML</div>
       </div>
     </div>
-    <div class="scroll-content">
-      <!-- Header -->
-      <div style="padding:16px 20px 12px">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div>
-            <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:3px">Good Morning 👋</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#fff">Mayfair Lagoon Hotel</div>
-          </div>
-          <div style="display:flex;gap:8px">
-            <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;position:relative">
-              🔔
-              <div style="width:8px;height:8px;background:#c0392b;border-radius:50%;position:absolute;top:4px;right:4px;border:1.5px solid var(--M3)"></div>
-            </div>
-            <div style="width:36px;height:36px;border-radius:50%;background:var(--G);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--D);cursor:pointer">ML</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
-          <span class="badge b-ok">✓ Verified</span>
-          <span class="badge b-g">4-Star Hotel</span>
-          <span style="font-size:10px;color:rgba(255,255,255,.4)">Khordha, Bhubaneswar</span>
-        </div>
-      </div>
 
-      <!-- KPIs -->
-      <div class="kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-lbl">This Month</div>
-          <div class="kpi-val">₹12.4L</div>
-          <div class="kpi-delta">▲ 22% vs last</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-lbl">Bookings</div>
-          <div class="kpi-val">18</div>
-          <div class="kpi-delta">5 pending approval</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-lbl">Active Venues</div>
-          <div class="kpi-val">3</div>
-          <div class="kpi-delta">All halls listed</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-lbl">Rating</div>
-          <div class="kpi-val">4.9 ⭐</div>
-          <div class="kpi-delta">128 reviews</div>
-        </div>
-      </div>
+    <div class="page-content">
 
-      <!-- Quick Actions -->
-      <div class="sec-title">Quick Actions</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 16px;margin-bottom:16px">
-        <div style="background:rgba(255,255,255,.08);border-radius:12px;padding:12px 6px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,.1)" onclick="showScreen('calendar')"><div style="font-size:22px;margin-bottom:5px">📅</div><div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:500">Calendar</div></div>
-        <div style="background:rgba(255,255,255,.08);border-radius:12px;padding:12px 6px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,.1)" onclick="showScreen('pricing')"><div style="font-size:22px;margin-bottom:5px">💰</div><div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:500">Pricing</div></div>
-        <div style="background:rgba(255,255,255,.08);border-radius:12px;padding:12px 6px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,.1)" onclick="showScreen('photos')"><div style="font-size:22px;margin-bottom:5px">📸</div><div style="font-size:9px;color:rgba(255,255,255,.6);font-weight:500">Photos</div></div>
-        <div style="background:rgba(201,151,58,.15);border-radius:12px;padding:12px 6px;text-align:center;cursor:pointer;border:1px solid rgba(201,151,58,.3)" onclick="showScreen('requests')"><div style="font-size:22px;margin-bottom:5px">📋</div><div style="font-size:9px;color:var(--G2);font-weight:600">Requests<br><span style="background:var(--ER);color:#fff;padding:1px 5px;border-radius:10px;font-size:8px">5</span></div></div>
+    <!-- ══ DASHBOARD ══ -->
+    <div class="page active" id="pg-dashboard">
+      <div class="alert-banner ab-err">
+        <div><div style="font-size:13px;font-weight:600;color:#F0A0A0">⚠️ 5 Booking Requests Pending</div><div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Respond within 24 hours to avoid cancellation</div></div>
+        <button class="btn-primary" style="padding:8px 16px;font-size:12px;white-space:nowrap" onclick="nav(document.querySelector('.sb-item:nth-child(8)'),'requests')">Review Now →</button>
       </div>
-
-      <!-- New Requests Alert -->
-      <div style="margin:0 16px 14px;background:rgba(139,26,26,.2);border:1px solid rgba(240,160,160,.3);border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+      <div class="kgrid">
+        <div class="kpi"><div class="kpi-icon">₹</div><div class="kpi-lbl">This Month Revenue</div><div class="kpi-val">₹12.4L</div><div class="kpi-delta">▲ 22% vs last month</div><div class="kbar"><div class="kfill" style="width:62%"></div></div></div>
+        <div class="kpi"><div class="kpi-icon">📋</div><div class="kpi-lbl">Total Bookings</div><div class="kpi-val">18</div><div class="kpi-delta">5 pending approval</div><div class="kbar"><div class="kfill" style="width:45%"></div></div></div>
+        <div class="kpi"><div class="kpi-icon">🏛</div><div class="kpi-lbl">Active Venues</div><div class="kpi-val">3</div><div class="kpi-delta">All halls listed</div><div class="kbar"><div class="kfill" style="width:100%"></div></div></div>
+        <div class="kpi"><div class="kpi-icon">⭐</div><div class="kpi-lbl">Rating</div><div class="kpi-val">4.9 ⭐</div><div class="kpi-delta">128 reviews</div><div class="kbar"><div class="kfill" style="width:98%"></div></div></div>
+      </div>
+      <div class="qa-grid">
+        <div class="qa-card" onclick="nav(document.querySelectorAll('.sb-item')[6],'calendar')"><div class="qa-ico">📅</div><div class="qa-lbl">Availability</div></div>
+        <div class="qa-card" onclick="nav(document.querySelectorAll('.sb-item')[7],'pricing')"><div class="qa-ico">💰</div><div class="qa-lbl">Update Pricing</div></div>
+        <div class="qa-card" onclick="nav(document.querySelectorAll('.sb-item')[9],'photos')"><div class="qa-ico">📸</div><div class="qa-lbl">Add Photos</div></div>
+        <div class="qa-card alert" onclick="nav(document.querySelectorAll('.sb-item')[4],'requests')"><div class="qa-ico">📋</div><div class="qa-lbl" style="color:var(--G2)">Requests <span style="background:var(--ER);color:#fff;padding:2px 6px;border-radius:10px;font-size:10px;margin-left:4px">5</span></div></div>
+      </div>
+      <div class="g2">
         <div>
-          <div style="font-size:12px;font-weight:600;color:#F0A0A0;margin-bottom:2px">⚠️ 5 Booking Requests Pending</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.5)">Respond within 24 hours</div>
+          <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:12px">My Venues</div>
+          <div class="venue-card">
+            <div class="vc-head"><div><div class="vc-name">🎊 Grand Ballroom</div><div class="vc-type">AC Hall · 600 guests</div></div><span class="b b-ok">Available</span></div>
+            <div class="vc-body">
+              <div class="vc-pricing">
+                <div class="vc-price-item"><div class="vc-price-season">🌸 Wedding</div><div class="vc-price-val">₹1,60,000</div></div>
+                <div class="vc-price-item"><div class="vc-price-season">☀️ Summer</div><div class="vc-price-val">₹1,10,000</div></div>
+                <div class="vc-price-item"><div class="vc-price-season">🍂 Off Season</div><div class="vc-price-val">₹80,000</div></div>
+              </div>
+              <div class="vc-actions">
+                <button class="vc-btn vc-cal" onclick="nav(document.querySelectorAll('.sb-item')[6],'calendar')">📅 Calendar</button>
+                <button class="vc-btn vc-price-btn" onclick="nav(document.querySelectorAll('.sb-item')[7],'pricing')">💰 Pricing</button>
+                <button class="vc-btn vc-fac" onclick="nav(document.querySelectorAll('.sb-item')[8],'facilities')">✅ Facilities</button>
+                <button class="vc-btn vc-photo" onclick="nav(document.querySelectorAll('.sb-item')[9],'photos')">📸 Photos</button>
+              </div>
+            </div>
+          </div>
+          <div class="venue-card">
+            <div class="vc-head"><div><div class="vc-name">🌸 Lotus Banquet</div><div class="vc-type">AC Hall · 250 guests</div></div><span class="b b-e">Booked May 1</span></div>
+            <div class="vc-body">
+              <div class="vc-pricing">
+                <div class="vc-price-item"><div class="vc-price-season">🌸 Wedding</div><div class="vc-price-val">₹80,000</div></div>
+                <div class="vc-price-item"><div class="vc-price-season">☀️ Summer</div><div class="vc-price-val">₹55,000</div></div>
+                <div class="vc-price-item"><div class="vc-price-season">🍂 Off Season</div><div class="vc-price-val">₹40,000</div></div>
+              </div>
+              <div class="vc-actions">
+                <button class="vc-btn vc-cal" onclick="nav(document.querySelectorAll('.sb-item')[6],'calendar')">📅 Calendar</button>
+                <button class="vc-btn vc-price-btn" onclick="nav(document.querySelectorAll('.sb-item')[7],'pricing')">💰 Pricing</button>
+                <button class="vc-btn vc-fac" onclick="nav(document.querySelectorAll('.sb-item')[8],'facilities')">✅ Facilities</button>
+                <button class="vc-btn vc-photo" onclick="nav(document.querySelectorAll('.sb-item')[9],'photos')">📸 Photos</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <button style="background:var(--ER);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif" onclick="showScreen('requests')">Review →</button>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:12px">New Requests</div>
+          <div class="req-card urgent">
+            <div class="req-top"><div class="req-name">Tapan & Mamata Nayak</div><div class="req-time">1 hr ago</div></div>
+            <div class="req-detail">🎊 Grand Ballroom · May 20, 2025 · 450 guests · Gold Package</div>
+            <div class="req-amount">₹2,10,000 · Advance ₹42,000</div>
+            <div class="req-actions">
+              <button class="ra-btn ra-accept">✓ Accept</button>
+              <button class="ra-btn ra-reject">✗ Decline</button>
+              <button class="ra-btn ra-wa">💬 WhatsApp</button>
+            </div>
+          </div>
+          <div class="req-card">
+            <div class="req-top"><div class="req-name">Suresh & Priya Mohapatra</div><div class="req-time">3 hrs ago</div></div>
+            <div class="req-detail">🌳 Garden Lawn · Jun 2, 2025 · 600 guests · Silver Package</div>
+            <div class="req-amount">₹1,40,000 · Advance ₹28,000</div>
+            <div class="req-actions">
+              <button class="ra-btn ra-accept">✓ Accept</button>
+              <button class="ra-btn ra-reject">✗ Decline</button>
+              <button class="ra-btn ra-wa">💬 WhatsApp</button>
+            </div>
+          </div>
+          <button class="btn-secondary" style="width:100%;margin-top:4px" onclick="nav(document.querySelectorAll('.sb-item')[4],'requests')">View all 5 requests →</button>
+        </div>
       </div>
+    </div>
 
-      <!-- My Venues preview -->
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 16px;margin-bottom:10px">
-        <div class="sec-title" style="padding:0;margin:0">My Venues</div>
-        <span style="font-size:11px;color:var(--G);cursor:pointer" onclick="showScreen('venues')">View all →</span>
+    <!-- ══ MY VENUES ══ -->
+    <div class="page" id="pg-venues">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <div style="font-size:13px;color:rgba(255,255,255,.5)">3 venues listed · All active</div>
+        <button class="btn-primary" onclick="nav(document.querySelectorAll('.sb-item')[11],'addvenue')">+ Add New Venue</button>
       </div>
+      <div class="venue-card">
+        <div class="vc-head"><div><div class="vc-name">🎊 Grand Ballroom</div><div class="vc-type">AC Hall · 600 guests max · Floor 1</div></div><span class="b b-ok">Available</span></div>
+        <div class="vc-body">
+          <div class="vc-tags"><span class="vc-tag">❄️ AC</span><span class="vc-tag">🎬 Drone OK</span><span class="vc-tag">💡 LED Wall</span><span class="vc-tag">🛏 Bridal Suite</span><span class="vc-tag">🅿️ Parking 300</span><span class="vc-tag">⚡ 100KVA Generator</span></div>
+          <div class="vc-pricing">
+            <div class="vc-price-item"><div class="vc-price-season">🌸 Wedding Season (Nov–Feb)</div><div class="vc-price-val">₹1,60,000/day</div></div>
+            <div class="vc-price-item"><div class="vc-price-season">☀️ Summer (Mar–Jun)</div><div class="vc-price-val">₹1,10,000/day</div></div>
+            <div class="vc-price-item"><div class="vc-price-season">🍂 Off Season (Jul–Oct)</div><div class="vc-price-val">₹80,000/day</div></div>
+          </div>
+          <div class="vc-actions">
+            <button class="vc-btn vc-cal" onclick="nav(document.querySelectorAll('.sb-item')[6],'calendar')">📅 Calendar</button>
+            <button class="vc-btn vc-price-btn" onclick="nav(document.querySelectorAll('.sb-item')[7],'pricing')">💰 Pricing</button>
+            <button class="vc-btn vc-fac" onclick="nav(document.querySelectorAll('.sb-item')[8],'facilities')">✅ Facilities</button>
+            <button class="vc-btn vc-photo" onclick="nav(document.querySelectorAll('.sb-item')[9],'photos')">📸 Photos</button>
+          </div>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="vc-head"><div><div class="vc-name">🌸 Lotus Banquet Hall</div><div class="vc-type">AC Hall · 250 guests max · Floor 2</div></div><span class="b b-e">Booked May 1</span></div>
+        <div class="vc-body">
+          <div class="vc-tags"><span class="vc-tag">❄️ AC</span><span class="vc-tag">🌊 Pool View</span><span class="vc-tag">🍸 Open Bar</span><span class="vc-tag">🛗 Lift Access</span></div>
+          <div class="vc-pricing">
+            <div class="vc-price-item"><div class="vc-price-season">🌸 Wedding Season</div><div class="vc-price-val">₹80,000/day</div></div>
+            <div class="vc-price-item"><div class="vc-price-season">☀️ Summer</div><div class="vc-price-val">₹55,000/day</div></div>
+            <div class="vc-price-item"><div class="vc-price-season">🍂 Off Season</div><div class="vc-price-val">₹40,000/day</div></div>
+          </div>
+          <div class="vc-actions">
+            <button class="vc-btn vc-cal" onclick="nav(document.querySelectorAll('.sb-item')[6],'calendar')">📅 Calendar</button>
+            <button class="vc-btn vc-price-btn" onclick="nav(document.querySelectorAll('.sb-item')[7],'pricing')">💰 Pricing</button>
+            <button class="vc-btn vc-fac" onclick="nav(document.querySelectorAll('.sb-item')[8],'facilities')">✅ Facilities</button>
+            <button class="vc-btn vc-photo" onclick="nav(document.querySelectorAll('.sb-item')[9],'photos')">📸 Photos</button>
+          </div>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="vc-head"><div><div class="vc-name">🌳 Garden Lawn</div><div class="vc-type">Open Ground · 800 guests max</div></div><span class="b b-ok">Available</span></div>
+        <div class="vc-body">
+          <div class="vc-tags"><span class="vc-tag">⛲ Fountain</span><span class="vc-tag">⛺ Tent Option</span><span class="vc-tag">🚁 Drone OK</span><span class="vc-tag">🌙 Night Lighting</span></div>
+          <div class="vc-pricing">
+            <div class="vc-price-item"><div class="vc-price-season">🌸 Wedding Season</div><div class="vc-price-val">₹1,10,000/day</div></div>
+            <div class="vc-price-item"><div class="vc-price-season">☀️ Summer</div><div class="vc-price-val">₹75,000/day</div></div>
+            <div class="vc-price-item"><div class="vc-price-season">🍂 Off Season</div><div class="vc-price-val">₹55,000/day</div></div>
+          </div>
+          <div class="vc-actions">
+            <button class="vc-btn vc-cal" onclick="nav(document.querySelectorAll('.sb-item')[6],'calendar')">📅 Calendar</button>
+            <button class="vc-btn vc-price-btn" onclick="nav(document.querySelectorAll('.sb-item')[7],'pricing')">💰 Pricing</button>
+            <button class="vc-btn vc-fac" onclick="nav(document.querySelectorAll('.sb-item')[8],'facilities')">✅ Facilities</button>
+            <button class="vc-btn vc-photo" onclick="nav(document.querySelectorAll('.sb-item')[9],'photos')">📸 Photos</button>
+          </div>
+        </div>
+      </div>
+      <div class="add-venue-dashed" onclick="nav(document.querySelectorAll('.sb-item')[11],'addvenue')">
+        <div style="font-size:32px;color:var(--G);margin-bottom:8px">+</div>
+        <div style="font-size:14px;font-weight:600;color:var(--G2)">Add Another Venue / Hall</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:4px">Hotels can add each hall separately — Grand Ballroom, Lawn, Banquet Hall</div>
+      </div>
+    </div>
 
-      <div class="venue-list-card" onclick="showScreen('venues')">
-        <div class="vlc-header">
-          <div><div class="vlc-name">🎊 Grand Ballroom</div><div class="vlc-type">AC Hall · 600 guests max</div></div>
-          <span class="badge b-ok">Available</span>
-        </div>
-        <div class="vlc-body">
-          <div class="vlc-price-row">
-            <div class="vlc-price">₹1,10,000<span style="font-size:10px;color:rgba(255,255,255,.4);font-weight:400">/day</span></div>
-            <div style="font-size:10px;color:rgba(255,255,255,.4)">Peak: ₹1,60,000</div>
+    <!-- ══ BOOKING REQUESTS ══ -->
+    <div class="page" id="pg-requests">
+      <div class="tabs">
+        <div class="tab active">New Requests (5)</div>
+        <div class="tab">Confirmed (13)</div>
+        <div class="tab">Completed (48)</div>
+        <div class="tab">Cancelled (3)</div>
+      </div>
+      <div class="g2">
+        <div>
+          <div class="req-card urgent">
+            <div class="req-top"><div class="req-name">Tapan & Mamata Nayak</div><div><span class="b b-e">Urgent · 1 hr ago</span></div></div>
+            <div class="req-detail">🎊 Grand Ballroom · May 20, 2025 · Monday<br>450 guests · Gold Package · 📸 Photography + 🍽 Catering included</div>
+            <div class="req-amount">₹2,10,000 total · Advance ₹42,000 (20%)</div>
+            <div class="req-actions">
+              <button class="ra-btn ra-accept">✓ Accept Booking</button>
+              <button class="ra-btn ra-reject">✗ Decline</button>
+              <button class="ra-btn ra-wa">💬 WhatsApp</button>
+            </div>
           </div>
-          <div class="vlc-actions">
-            <button class="vlc-btn vlc-cal" onclick="event.stopPropagation();showScreen('calendar')">📅 Calendar</button>
-            <button class="vlc-btn vlc-price-btn" onclick="event.stopPropagation();showScreen('pricing')">💰 Pricing</button>
-            <button class="vlc-btn vlc-edit" onclick="event.stopPropagation()">✏️ Edit</button>
+          <div class="req-card">
+            <div class="req-top"><div class="req-name">Suresh & Priya Mohapatra</div><div><span style="font-size:10px;color:rgba(255,255,255,.4)">3 hrs ago</span></div></div>
+            <div class="req-detail">🌳 Garden Lawn · Jun 2, 2025 · Sunday<br>600 guests · Silver Package</div>
+            <div class="req-amount">₹1,40,000 · Advance ₹28,000</div>
+            <div class="req-actions">
+              <button class="ra-btn ra-accept">✓ Accept</button>
+              <button class="ra-btn ra-reject">✗ Decline</button>
+              <button class="ra-btn ra-wa">💬 WhatsApp</button>
+            </div>
+          </div>
+          <div class="req-card">
+            <div class="req-top"><div class="req-name">Bikash & Kabita Das</div><div><span style="font-size:10px;color:rgba(255,255,255,.4)">5 hrs ago</span></div></div>
+            <div class="req-detail">🎊 Grand Ballroom · Jun 8, 2025<br>800 guests · Platinum Package + Full Services</div>
+            <div class="req-amount">₹4,65,000 · Advance ₹93,000</div>
+            <div class="req-actions">
+              <button class="ra-btn ra-accept">✓ Accept</button>
+              <button class="ra-btn ra-reject">✗ Decline</button>
+              <button class="ra-btn ra-wa">💬 WhatsApp</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="req-card">
+            <div class="req-top"><div class="req-name">Rajesh & Anita Panda</div><div><span style="font-size:10px;color:rgba(255,255,255,.4)">Yesterday</span></div></div>
+            <div class="req-detail">🌸 Lotus Banquet · Jun 15, 2025<br>200 guests · Silver Package</div>
+            <div class="req-amount">₹85,000 · Advance ₹17,000</div>
+            <div class="req-actions">
+              <button class="ra-btn ra-accept">✓ Accept</button>
+              <button class="ra-btn ra-reject">✗ Decline</button>
+              <button class="ra-btn ra-wa">💬 WhatsApp</button>
+            </div>
+          </div>
+          <div class="req-card">
+            <div class="req-top"><div class="req-name">Nirmal & Sunita Behera</div><div><span style="font-size:10px;color:rgba(255,255,255,.4)">Yesterday</span></div></div>
+            <div class="req-detail">🎊 Grand Ballroom · Jul 1, 2025<br>500 guests · Gold Package</div>
+            <div class="req-amount">₹2,57,000 · Advance ₹51,400</div>
+            <div class="req-actions">
+              <button class="ra-btn ra-accept">✓ Accept</button>
+              <button class="ra-btn ra-reject">✗ Decline</button>
+              <button class="ra-btn ra-wa">💬 WhatsApp</button>
+            </div>
+          </div>
+          <div class="card" style="margin-top:0">
+            <div class="card-hd">Quick Stats</div>
+            <div class="row-item"><div style="font-size:12px;color:rgba(255,255,255,.6)">Total requests this month</div><div style="font-size:14px;font-weight:700;color:#fff">18</div></div>
+            <div class="row-item"><div style="font-size:12px;color:rgba(255,255,255,.6)">Acceptance rate</div><div style="font-size:14px;font-weight:700;color:var(--G2)">87%</div></div>
+            <div class="row-item"><div style="font-size:12px;color:rgba(255,255,255,.6)">Avg response time</div><div style="font-size:14px;font-weight:700;color:var(--G2)">2.4 hrs</div></div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="venue-list-card" onclick="showScreen('venues')">
-        <div class="vlc-header">
-          <div><div class="vlc-name">🌸 Lotus Banquet</div><div class="vlc-type">AC Hall · 250 guests max</div></div>
-          <span class="badge b-e">Booked May 1</span>
-        </div>
-        <div class="vlc-body">
-          <div class="vlc-price-row">
-            <div class="vlc-price">₹55,000<span style="font-size:10px;color:rgba(255,255,255,.4);font-weight:400">/day</span></div>
-            <div style="font-size:10px;color:rgba(255,255,255,.4)">Peak: ₹80,000</div>
+    <!-- ══ CALENDAR ══ -->
+    <div class="page" id="pg-calendar">
+      <div class="pill-row">
+        <div class="pill active">Grand Ballroom</div>
+        <div class="pill">Lotus Banquet</div>
+        <div class="pill">Garden Lawn</div>
+      </div>
+      <div class="g2">
+        <div>
+          <div class="card-w">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+              <div style="font-size:15px;font-weight:600;color:var(--D)">May 2025</div>
+              <div style="display:flex;gap:14px"><span style="font-size:20px;color:var(--D3);cursor:pointer">‹</span><span style="font-size:20px;color:var(--D3);cursor:pointer">›</span></div>
+            </div>
+            <div class="cal-grid" style="margin-bottom:8px">
+              <div style="font-size:10px;font-weight:700;color:var(--D3);text-align:center;padding-bottom:6px">S</div>
+              <div style="font-size:10px;font-weight:700;color:var(--D3);text-align:center;padding-bottom:6px">M</div>
+              <div style="font-size:10px;font-weight:700;color:var(--D3);text-align:center;padding-bottom:6px">T</div>
+              <div style="font-size:10px;font-weight:700;color:var(--D3);text-align:center;padding-bottom:6px">W</div>
+              <div style="font-size:10px;font-weight:700;color:var(--D3);text-align:center;padding-bottom:6px">T</div>
+              <div style="font-size:10px;font-weight:700;color:var(--D3);text-align:center;padding-bottom:6px">F</div>
+              <div style="font-size:10px;font-weight:700;color:var(--D3);text-align:center;padding-bottom:6px">S</div>
+              <div></div><div></div><div></div>
+              <div class="cal-day cd-avail">1</div><div class="cal-day cd-booked">2</div><div class="cal-day cd-avail">3</div><div class="cal-day cd-offline">4</div>
+              <div class="cal-day cd-avail">5</div><div class="cal-day cd-avail">6</div><div class="cal-day cd-booked">7</div><div class="cal-day cd-avail">8</div><div class="cal-day cd-avail">9</div><div class="cal-day cd-offline">10</div><div class="cal-day cd-avail">11</div>
+              <div class="cal-day cd-booked">12</div><div class="cal-day cd-avail">13</div><div class="cal-day cd-avail">14</div><div class="cal-day cd-offline">15</div><div class="cal-day cd-avail">16</div><div class="cal-day cd-avail">17</div><div class="cal-day cd-booked">18</div>
+              <div class="cal-day cd-avail">19</div><div class="cal-day cd-avail">20</div><div class="cal-day cd-avail">21</div><div class="cal-day cd-avail">22</div><div class="cal-day cd-booked">23</div><div class="cal-day cd-today cd-avail">24</div><div class="cal-day cd-avail">25</div>
+              <div class="cal-day cd-offline">26</div><div class="cal-day cd-avail">27</div><div class="cal-day cd-booked">28</div><div class="cal-day cd-avail">29</div><div class="cal-day cd-avail">30</div><div class="cal-day cd-avail">31</div>
+            </div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--S2)">
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--D3)"><span style="width:12px;height:12px;background:rgba(45,106,63,.2);border:1px solid rgba(45,106,63,.3);border-radius:3px;display:inline-block"></span>Free</div>
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--D3)"><span style="width:12px;height:12px;background:rgba(139,26,26,.25);border:1px solid rgba(139,26,26,.25);border-radius:3px;display:inline-block"></span>Online Booked</div>
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--D3)"><span style="width:12px;height:12px;background:rgba(88,32,160,.2);border:1px solid rgba(88,32,160,.2);border-radius:3px;display:inline-block"></span>Offline Booked</div>
+            </div>
           </div>
-          <div class="vlc-actions">
-            <button class="vlc-btn vlc-cal" onclick="event.stopPropagation();showScreen('calendar')">📅 Calendar</button>
-            <button class="vlc-btn vlc-price-btn" onclick="event.stopPropagation();showScreen('pricing')">💰 Pricing</button>
-            <button class="vlc-btn vlc-edit" onclick="event.stopPropagation()">✏️ Edit</button>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-hd">Mark Offline Booking</div>
+            <div class="fg"><label>Select Venue</label><select><option>Grand Ballroom</option><option>Lotus Banquet</option><option>Garden Lawn</option></select></div>
+            <div class="frow2">
+              <div class="fg"><label>Date</label><input type="date"></div>
+              <div class="fg"><label>Status</label><select><option>Booked Offline</option><option>Blocked</option><option>Under Maintenance</option></select></div>
+            </div>
+            <div class="fg"><label>Client Name (Optional)</label><input placeholder="e.g. Ravi & Priya Sharma"></div>
+            <div class="fg"><label>Notes</label><input placeholder="e.g. Advance received ₹20,000"></div>
+            <button class="btn-maroon" style="width:100%">Mark as Booked →</button>
+          </div>
+          <div class="card">
+            <div class="card-hd">Upcoming Bookings</div>
+            <div class="row-item"><div><div style="font-size:12px;font-weight:500;color:#fff">Tapan & Mamata</div><div style="font-size:10px;color:rgba(255,255,255,.4)">May 20 · Grand Ballroom</div></div><span class="b b-ok">Confirmed</span></div>
+            <div class="row-item"><div><div style="font-size:12px;font-weight:500;color:#fff">Priya & Rohan</div><div style="font-size:10px;color:rgba(255,255,255,.4)">May 28 · Garden Lawn</div></div><span class="b b-ok">Confirmed</span></div>
+            <div class="row-item"><div><div style="font-size:12px;font-weight:500;color:#fff">Bikash & Kabita</div><div style="font-size:10px;color:rgba(255,255,255,.4)">Jun 8 · Grand Ballroom</div></div><span class="b b-w">Pending</span></div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div style="height:100px"></div>
+    <!-- ══ PRICING ══ -->
+    <div class="page" id="pg-pricing">
+      <div class="pill-row">
+        <div class="pill active">Grand Ballroom</div>
+        <div class="pill">Lotus Banquet</div>
+        <div class="pill">Garden Lawn</div>
+      </div>
+      <div class="alert-banner ab-ok" style="margin-bottom:16px"><span style="font-size:20px">✓</span><div style="font-size:13px;color:rgba(255,255,255,.8)">Price changes go <strong style="color:#7AE09A">live instantly</strong> on the Vivah Odisha app. Users see updated prices immediately.</div></div>
+      <div class="g2">
+        <div>
+          <div class="season-card">
+            <div><div style="font-size:14px;font-weight:600;color:#fff;margin-bottom:3px">🌸 Wedding Season</div><div style="font-size:11px;color:rgba(255,255,255,.4)">November — February · Peak demand</div><div class="season-bar" style="background:linear-gradient(90deg,var(--G),var(--G2));width:100%"></div></div>
+            <div style="text-align:right"><div style="font-size:22px;font-weight:700;color:var(--G2)">₹1,60,000</div><div style="font-size:10px;color:rgba(255,255,255,.4)">/day</div></div>
+          </div>
+          <div class="season-card">
+            <div><div style="font-size:14px;font-weight:600;color:#fff;margin-bottom:3px">☀️ Summer Season</div><div style="font-size:11px;color:rgba(255,255,255,.4)">March — June · Standard demand</div><div class="season-bar" style="background:linear-gradient(90deg,#85C8E0,#4090B0);width:69%"></div></div>
+            <div style="text-align:right"><div style="font-size:22px;font-weight:700;color:var(--G2)">₹1,10,000</div><div style="font-size:10px;color:rgba(255,255,255,.4)">/day</div></div>
+          </div>
+          <div class="season-card">
+            <div><div style="font-size:14px;font-weight:600;color:#fff;margin-bottom:3px">🍂 Off Season</div><div style="font-size:11px;color:rgba(255,255,255,.4)">July — October · Monsoon season</div><div class="season-bar" style="background:linear-gradient(90deg,#B0C8A0,#6B9870);width:50%"></div></div>
+            <div style="text-align:right"><div style="font-size:22px;font-weight:700;color:var(--G2)">₹80,000</div><div style="font-size:10px;color:rgba(255,255,255,.4)">/day</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-hd">Update Price</div>
+            <div class="fg"><label>Select Venue</label><select><option>Grand Ballroom</option><option>Lotus Banquet</option><option>Garden Lawn</option></select></div>
+            <div class="fg"><label>Season</label><select><option>Wedding Season (Nov–Feb)</option><option>Summer (Mar–Jun)</option><option>Off Season (Jul–Oct)</option><option>Special Date</option></select></div>
+            <div class="fg"><label>New Price (₹ per day)</label><input type="number" placeholder="e.g. 175000"></div>
+            <button class="btn-primary" style="width:100%">Update Price — Goes Live Now ✓</button>
+          </div>
+          <div class="card">
+            <div class="card-hd">Special Date Pricing</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:12px">Set a custom price for a specific date — e.g. New Year, Diwali, Akshaya Tritiya</div>
+            <div class="frow2">
+              <div class="fg"><label>Date</label><input type="date"></div>
+              <div class="fg"><label>Special Price (₹)</label><input type="number" placeholder="e.g. 200000"></div>
+            </div>
+            <button class="btn-secondary" style="width:100%">+ Add Special Date</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item active" onclick="showScreen('dashboard')"><div class="nav-ico">🏠</div><div class="nav-lbl">Home</div></div>
-      <div class="nav-item" onclick="showScreen('venues')"><div class="nav-ico">🏛</div><div class="nav-lbl">Venues</div></div>
-      <div class="nav-item" onclick="showScreen('requests')"><div class="nav-ico">📋</div><div class="nav-lbl">Requests</div></div>
-      <div class="nav-item" onclick="showScreen('earnings')"><div class="nav-ico">₹</div><div class="nav-lbl">Earnings</div></div>
-      <div class="nav-item" onclick="showScreen('profile')"><div class="nav-ico">👤</div><div class="nav-lbl">Profile</div></div>
-    </div>
-  </div>
 
-  <!-- ═══ MY VENUES ═══ -->
-  <div class="screen" id="scr-venues" style="background:var(--M3)">
-    <div class="notch"><div class="notch-pill"><span class="notch-time">9:41</span><span class="notch-icons">📶 🔋</span></div></div>
-    <div class="screen-header">
-      <div class="sh-top">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff">My Venues</div>
-        <button style="background:var(--G);color:var(--D);border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif" onclick="showScreen('addvenue')">+ Add Venue</button>
+    <!-- ══ FACILITIES ══ -->
+    <div class="page" id="pg-facilities">
+      <div class="pill-row">
+        <div class="pill active">Grand Ballroom</div>
+        <div class="pill">Lotus Banquet</div>
+        <div class="pill">Garden Lawn</div>
       </div>
-      <div class="sh-sub">3 venues listed · All active</div>
+      <div class="g3">
+        <div class="card">
+          <div class="card-hd">Basic Facilities</div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">❄️</div><div><div class="ri-name">Air Conditioning</div><div class="ri-sub">Central AC · Full hall</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🅿️</div><div><div class="ri-name">Parking</div><div class="ri-sub">300 cars · Valet available</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">⚡</div><div><div class="ri-name">Generator Backup</div><div class="ri-sub">100 KVA · Full backup</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🛏</div><div><div class="ri-name">Bridal Suite</div><div class="ri-sub">2 rooms · Getting ready</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">♿</div><div><div class="ri-name">Wheelchair Access</div><div class="ri-sub">Ramp + lift</div></div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🛗</div><div><div class="ri-name">Elevator / Lift</div><div class="ri-sub">2 lifts available</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-hd">Tech & AV</div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">💡</div><div><div class="ri-name">LED Screen / Wall</div><div class="ri-sub">20ft LED video wall</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🎤</div><div><div class="ri-name">Sound System</div><div class="ri-sub">Professional PA system</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🚁</div><div><div class="ri-name">Drone Allowed</div><div class="ri-sub">No restrictions</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">📡</div><div><div class="ri-name">WiFi</div><div class="ri-sub">High speed · Guest access</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🎭</div><div><div class="ri-name">Stage / Mandap Area</div><div class="ri-sub">Raised platform</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">💡</div><div><div class="ri-name">Stage Lighting</div><div class="ri-sub">Color wash + spot</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-hd">Food & Catering</div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🍽</div><div><div class="ri-name">In-house Catering</div><div class="ri-sub">Odia + North Indian</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🍸</div><div><div class="ri-name">Bar / Beverages</div><div class="ri-sub">Licensed · Optional</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">👨‍🍳</div><div><div class="ri-name">Outside Caterer OK</div><div class="ri-sub">No restrictions</div></div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🍱</div><div><div class="ri-name">Live Counters</div><div class="ri-sub">Chaat, dosa, dessert</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🧁</div><div><div class="ri-name">In-house Cake</div><div class="ri-sub">Custom wedding cakes</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+      </div>
+      <button class="btn-primary">Save All Facilities ✓</button>
     </div>
-    <div class="scroll-content">
-      <div class="venue-list-card">
-        <div class="vlc-header">
-          <div><div class="vlc-name">🎊 Grand Ballroom</div><div class="vlc-type">AC Hall · 600 guests · Floor 1</div></div>
-          <span class="badge b-ok">Available</span>
-        </div>
-        <div class="vlc-body">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
-            <span style="font-size:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);padding:2px 7px;border-radius:20px">❄️ AC</span>
-            <span style="font-size:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);padding:2px 7px;border-radius:20px">🎬 Drone OK</span>
-            <span style="font-size:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);padding:2px 7px;border-radius:20px">💡 LED Wall</span>
-            <span style="font-size:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);padding:2px 7px;border-radius:20px">🛏 Bridal Suite</span>
-          </div>
-          <div class="vlc-price-row">
-            <div><div class="vlc-price">₹1,10,000/day</div><div style="font-size:10px;color:rgba(255,255,255,.4)">Peak: ₹1,60,000 · Off: ₹80,000</div></div>
-          </div>
-          <div class="vlc-actions">
-            <button class="vlc-btn vlc-cal" onclick="showScreen('calendar')">📅 Calendar</button>
-            <button class="vlc-btn vlc-price-btn" onclick="showScreen('pricing')">💰 Pricing</button>
-            <button class="vlc-btn" style="background:rgba(201,151,58,.15);color:var(--G2)" onclick="showScreen('facilities')">✅ Facilities</button>
-            <button class="vlc-btn vlc-edit" onclick="showScreen('photos')">📸 Photos</button>
-          </div>
-        </div>
-      </div>
-      <div class="venue-list-card">
-        <div class="vlc-header">
-          <div><div class="vlc-name">🌸 Lotus Banquet Hall</div><div class="vlc-type">AC Hall · 250 guests · Floor 2</div></div>
-          <span class="badge b-e">Booked May 1</span>
-        </div>
-        <div class="vlc-body">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
-            <span style="font-size:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);padding:2px 7px;border-radius:20px">❄️ AC</span>
-            <span style="font-size:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);padding:2px 7px;border-radius:20px">🌊 Pool View</span>
-            <span style="font-size:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);padding:2px 7px;border-radius:20px">🍸 Open Bar</span>
-          </div>
-          <div class="vlc-price-row">
-            <div><div class="vlc-price">₹55,000/day</div><div style="font-size:10px;color:rgba(255,255,255,.4)">Peak: ₹80,000 · Off: ₹40,000</div></div>
-          </div>
-          <div class="vlc-actions">
-            <button class="vlc-btn vlc-cal" onclick="showScreen('calendar')">📅 Calendar</button>
-            <button class="vlc-btn vlc-price-btn" onclick="showScreen('pricing')">💰 Pricing</button>
-            <button class="vlc-btn" style="background:rgba(201,151,58,.15);color:var(--G2)" onclick="showScreen('facilities')">✅ Facilities</button>
-            <button class="vlc-btn vlc-edit" onclick="showScreen('photos')">📸 Photos</button>
-          </div>
-        </div>
-      </div>
-      <div class="venue-list-card">
-        <div class="vlc-header">
-          <div><div class="vlc-name">🌳 Garden Lawn</div><div class="vlc-type">Open Ground · 800 guests max</div></div>
-          <span class="badge b-ok">Available</span>
-        </div>
-        <div class="vlc-body">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
-            <span style="font-size:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);padding:2px 7px;border-radius:20px">⛲ Fountain</span>
-            <span style="font-size:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);padding:2px 7px;border-radius:20px">⛺ Tent Option</span>
-            <span style="font-size:9px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);padding:2px 7px;border-radius:20px">🚁 Drone OK</span>
-          </div>
-          <div class="vlc-price-row">
-            <div><div class="vlc-price">₹75,000/day</div><div style="font-size:10px;color:rgba(255,255,255,.4)">Peak: ₹1,10,000 · Off: ₹55,000</div></div>
-          </div>
-          <div class="vlc-actions">
-            <button class="vlc-btn vlc-cal" onclick="showScreen('calendar')">📅 Calendar</button>
-            <button class="vlc-btn vlc-price-btn" onclick="showScreen('pricing')">💰 Pricing</button>
-            <button class="vlc-btn" style="background:rgba(201,151,58,.15);color:var(--G2)" onclick="showScreen('facilities')">✅ Facilities</button>
-            <button class="vlc-btn vlc-edit" onclick="showScreen('photos')">📸 Photos</button>
-          </div>
-        </div>
-      </div>
-      <div style="margin:0 16px 14px;border:1.5px dashed rgba(201,151,58,.4);border-radius:14px;padding:18px;text-align:center;cursor:pointer;background:rgba(201,151,58,.05)" onclick="showScreen('addvenue')">
-        <div style="font-size:28px;margin-bottom:6px">+</div>
-        <div style="font-size:13px;font-weight:600;color:var(--G2)">Add Another Venue / Hall</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:3px">Hotel? Add each hall separately</div>
-      </div>
-      <div style="height:100px"></div>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showScreen('dashboard')"><div class="nav-ico">🏠</div><div class="nav-lbl">Home</div></div>
-      <div class="nav-item active" onclick="showScreen('venues')"><div class="nav-ico">🏛</div><div class="nav-lbl">Venues</div></div>
-      <div class="nav-item" onclick="showScreen('requests')"><div class="nav-ico">📋</div><div class="nav-lbl">Requests</div></div>
-      <div class="nav-item" onclick="showScreen('earnings')"><div class="nav-ico">₹</div><div class="nav-lbl">Earnings</div></div>
-      <div class="nav-item" onclick="showScreen('profile')"><div class="nav-ico">👤</div><div class="nav-lbl">Profile</div></div>
-    </div>
-  </div>
 
-  <!-- ═══ ADD VENUE ═══ -->
-  <div class="screen" id="scr-addvenue" style="background:var(--M3)">
-    <div class="notch"><div class="notch-pill"><span class="notch-time">9:41</span><span class="notch-icons">📶 🔋</span></div></div>
-    <div class="screen-header">
-      <div class="sh-top">
-        <button class="sh-back" onclick="showScreen('venues')">←</button>
-        <div class="sh-title">Add New Venue</div>
-        <div style="width:36px"></div>
+    <!-- ══ PHOTOS ══ -->
+    <div class="page" id="pg-photos">
+      <div class="pill-row">
+        <div class="pill active">Interior</div>
+        <div class="pill">Exterior</div>
+        <div class="pill">360° Video</div>
+        <div class="pill">During Event</div>
       </div>
-    </div>
-    <div class="scroll-content" style="padding:0 16px 20px">
-      <div class="step-dots" style="margin-bottom:24px">
-        <div class="dot active"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-      </div>
-      <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:16px">Step 1 — Basic Details</div>
-      <div class="fg">
-        <label>Venue / Hall Name</label>
-        <input placeholder="e.g. Grand Ballroom, Lotus Hall">
-      </div>
-      <div class="fg">
-        <label>Venue Type</label>
-        <select>
-          <option>AC Hall</option>
-          <option>Open Ground / Lawn</option>
-          <option>Banquet Hall</option>
-          <option>Rooftop Terrace</option>
-          <option>Pool Side</option>
-          <option>Full Hotel Function Space</option>
-        </select>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div class="fg">
-          <label>Min Guests</label>
-          <input type="number" placeholder="50">
-        </div>
-        <div class="fg">
-          <label>Max Guests</label>
-          <input type="number" placeholder="600">
-        </div>
-      </div>
-      <div class="fg">
-        <label>Floor / Location</label>
-        <input placeholder="e.g. Ground Floor, Rooftop">
-      </div>
-      <div class="fg">
-        <label>Area (sq.ft) — Optional</label>
-        <input type="number" placeholder="e.g. 4500">
-      </div>
-      <div class="fg">
-        <label>Short Description</label>
-        <textarea placeholder="Describe your venue — decor, ambience, speciality..."></textarea>
-      </div>
-      <div class="fg">
-        <label>Base Price (₹/day)</label>
-        <input type="number" placeholder="e.g. 85000">
-      </div>
-      <button class="btn-primary" style="margin-top:8px">Next — Add Facilities →</button>
-      <div style="height:30px"></div>
-    </div>
-  </div>
-
-  <!-- ═══ CALENDAR ═══ -->
-  <div class="screen" id="scr-calendar" style="background:var(--M3)">
-    <div class="notch"><div class="notch-pill"><span class="notch-time">9:41</span><span class="notch-icons">📶 🔋</span></div></div>
-    <div class="screen-header">
-      <div class="sh-top">
-        <button class="sh-back" onclick="showScreen('dashboard')">←</button>
-        <div class="sh-title">Availability</div>
-        <div style="width:36px"></div>
-      </div>
-    </div>
-    <div class="scroll-content" style="padding:0 16px 20px">
-      <!-- Venue Selector -->
-      <div class="pill-tabs">
-        <div class="pill-tab active">Grand Ballroom</div>
-        <div class="pill-tab">Lotus Banquet</div>
-        <div class="pill-tab">Garden Lawn</div>
-      </div>
-      <!-- Calendar -->
-      <div class="white-card" style="margin:0 0 12px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-          <div style="font-size:14px;font-weight:600;color:var(--D)">May 2025</div>
-          <div style="display:flex;gap:12px">
-            <span style="font-size:18px;color:var(--D3);cursor:pointer">‹</span>
-            <span style="font-size:18px;color:var(--D3);cursor:pointer">›</span>
-          </div>
-        </div>
-        <div class="cal-grid">
-          <div class="cal-hdr-day">S</div><div class="cal-hdr-day">M</div><div class="cal-hdr-day">T</div><div class="cal-hdr-day">W</div><div class="cal-hdr-day">T</div><div class="cal-hdr-day">F</div><div class="cal-hdr-day">S</div>
-          <div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day empty"></div>
-          <div class="cal-day avail">1</div><div class="cal-day booked">2</div><div class="cal-day avail">3</div><div class="cal-day offline">4</div>
-          <div class="cal-day avail">5</div><div class="cal-day avail">6</div><div class="cal-day booked">7</div><div class="cal-day avail">8</div><div class="cal-day avail">9</div><div class="cal-day offline">10</div><div class="cal-day avail">11</div>
-          <div class="cal-day booked">12</div><div class="cal-day avail">13</div><div class="cal-day avail">14</div><div class="cal-day offline">15</div><div class="cal-day avail">16</div><div class="cal-day avail">17</div><div class="cal-day booked">18</div>
-          <div class="cal-day avail">19</div><div class="cal-day avail">20</div><div class="cal-day avail">21</div><div class="cal-day avail">22</div><div class="cal-day booked">23</div><div class="cal-day today avail">24</div><div class="cal-day avail">25</div>
-          <div class="cal-day offline">26</div><div class="cal-day avail">27</div><div class="cal-day booked">28</div><div class="cal-day avail">29</div><div class="cal-day avail">30</div><div class="cal-day avail">31</div>
-        </div>
-        <!-- Legend -->
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-          <div style="display:flex;align-items:center;gap:5px;font-size:9px;color:var(--D3)"><span style="width:10px;height:10px;background:rgba(45,106,63,.25);border:1px solid rgba(45,106,63,.3);border-radius:2px;display:inline-block"></span>Free</div>
-          <div style="display:flex;align-items:center;gap:5px;font-size:9px;color:var(--D3)"><span style="width:10px;height:10px;background:rgba(139,26,26,.3);border:1px solid rgba(139,26,26,.3);border-radius:2px;display:inline-block"></span>Online Booked</div>
-          <div style="display:flex;align-items:center;gap:5px;font-size:9px;color:var(--D3)"><span style="width:10px;height:10px;background:rgba(88,32,160,.25);border:1px solid rgba(88,32,160,.3);border-radius:2px;display:inline-block"></span>Offline Booked</div>
-        </div>
-      </div>
-      <!-- Block Date -->
-      <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:10px">Mark Offline Booking</div>
-      <div class="dark-card" style="margin:0 0 10px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-          <div class="fg fg-white" style="margin:0">
-            <label>Select Venue</label>
-            <select style="background:var(--S);color:var(--D);border-color:var(--S2)">
-              <option>Grand Ballroom</option>
-              <option>Lotus Banquet</option>
-              <option>Garden Lawn</option>
-            </select>
-          </div>
-          <div class="fg fg-white" style="margin:0">
-            <label>Date</label>
-            <input type="date" style="background:var(--S);color:var(--D);border-color:var(--S2)">
-          </div>
-        </div>
-        <div class="fg fg-white" style="margin:0 0 10px">
-          <label>Client Name (Optional)</label>
-          <input placeholder="e.g. Ravi & Priya Sharma" style="background:var(--S);color:var(--D);border-color:var(--S2)">
-        </div>
-        <button class="btn-maroon">Mark as Booked</button>
-      </div>
-      <div style="height:30px"></div>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showScreen('dashboard')"><div class="nav-ico">🏠</div><div class="nav-lbl">Home</div></div>
-      <div class="nav-item active" onclick="showScreen('venues')"><div class="nav-ico">🏛</div><div class="nav-lbl">Venues</div></div>
-      <div class="nav-item" onclick="showScreen('requests')"><div class="nav-ico">📋</div><div class="nav-lbl">Requests</div></div>
-      <div class="nav-item" onclick="showScreen('earnings')"><div class="nav-ico">₹</div><div class="nav-lbl">Earnings</div></div>
-      <div class="nav-item" onclick="showScreen('profile')"><div class="nav-ico">👤</div><div class="nav-lbl">Profile</div></div>
-    </div>
-  </div>
-
-  <!-- ═══ PRICING ═══ -->
-  <div class="screen" id="scr-pricing" style="background:var(--M3)">
-    <div class="notch"><div class="notch-pill"><span class="notch-time">9:41</span><span class="notch-icons">📶 🔋</span></div></div>
-    <div class="screen-header">
-      <div class="sh-top">
-        <button class="sh-back" onclick="showScreen('dashboard')">←</button>
-        <div class="sh-title">Seasonal Pricing</div>
-        <div style="width:36px"></div>
-      </div>
-      <div class="sh-sub">Changes go live instantly on the app</div>
-    </div>
-    <div class="scroll-content" style="padding:0 16px 20px">
-      <div class="pill-tabs">
-        <div class="pill-tab active">Grand Ballroom</div>
-        <div class="pill-tab">Lotus Banquet</div>
-        <div class="pill-tab">Garden Lawn</div>
-      </div>
-      <!-- Season Cards -->
-      <div class="white-card" style="margin:0 0 10px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-          <div>
-            <div style="font-size:13px;font-weight:600;color:var(--D)">🌸 Wedding Season</div>
-            <div style="font-size:10px;color:var(--D3)">November — February · Peak demand</div>
-          </div>
-          <div style="font-size:18px;font-weight:700;color:var(--M)">₹1,60,000</div>
-        </div>
-        <div class="season-bar" style="background:linear-gradient(90deg,var(--G),var(--G2))"></div>
-        <div style="display:flex;justify-content:flex-end;margin-top:8px"><span style="font-size:11px;color:var(--M);font-weight:500;cursor:pointer">Edit Price →</span></div>
-      </div>
-      <div class="white-card" style="margin:0 0 10px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-          <div>
-            <div style="font-size:13px;font-weight:600;color:var(--D)">☀️ Summer Season</div>
-            <div style="font-size:10px;color:var(--D3)">March — June · Standard demand</div>
-          </div>
-          <div style="font-size:18px;font-weight:700;color:var(--M)">₹1,10,000</div>
-        </div>
-        <div class="season-bar" style="background:linear-gradient(90deg,#85C8E0,#4090B0)"></div>
-        <div style="display:flex;justify-content:flex-end;margin-top:8px"><span style="font-size:11px;color:var(--M);font-weight:500;cursor:pointer">Edit Price →</span></div>
-      </div>
-      <div class="white-card" style="margin:0 0 16px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-          <div>
-            <div style="font-size:13px;font-weight:600;color:var(--D)">🍂 Off Season</div>
-            <div style="font-size:10px;color:var(--D3)">July — October · Monsoon season</div>
-          </div>
-          <div style="font-size:18px;font-weight:700;color:var(--M)">₹80,000</div>
-        </div>
-        <div class="season-bar" style="background:linear-gradient(90deg,#B0C8A0,#6B9870)"></div>
-        <div style="display:flex;justify-content:flex-end;margin-top:8px"><span style="font-size:11px;color:var(--M);font-weight:500;cursor:pointer">Edit Price →</span></div>
-      </div>
-      <!-- Update Price -->
-      <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:10px">Update Price</div>
-      <div class="dark-card" style="margin:0 0 12px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-          <div class="fg" style="margin:0">
-            <label>Season</label>
-            <select><option>Wedding Season</option><option>Summer</option><option>Off Season</option><option>Special Date</option></select>
-          </div>
-          <div class="fg" style="margin:0">
-            <label>New Price (₹/day)</label>
-            <input type="number" placeholder="e.g. 175000">
-          </div>
-        </div>
-        <button class="btn-primary">Update Price — Goes Live Now ✓</button>
-      </div>
-      <div style="height:30px"></div>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showScreen('dashboard')"><div class="nav-ico">🏠</div><div class="nav-lbl">Home</div></div>
-      <div class="nav-item active" onclick="showScreen('venues')"><div class="nav-ico">🏛</div><div class="nav-lbl">Venues</div></div>
-      <div class="nav-item" onclick="showScreen('requests')"><div class="nav-ico">📋</div><div class="nav-lbl">Requests</div></div>
-      <div class="nav-item" onclick="showScreen('earnings')"><div class="nav-ico">₹</div><div class="nav-lbl">Earnings</div></div>
-      <div class="nav-item" onclick="showScreen('profile')"><div class="nav-ico">👤</div><div class="nav-lbl">Profile</div></div>
-    </div>
-  </div>
-
-  <!-- ═══ FACILITIES ═══ -->
-  <div class="screen" id="scr-facilities" style="background:var(--M3)">
-    <div class="notch"><div class="notch-pill"><span class="notch-time">9:41</span><span class="notch-icons">📶 🔋</span></div></div>
-    <div class="screen-header">
-      <div class="sh-top">
-        <button class="sh-back" onclick="showScreen('venues')">←</button>
-        <div class="sh-title">Facilities</div>
-        <div style="width:36px"></div>
-      </div>
-      <div class="sh-sub">Grand Ballroom · Shown to customers</div>
-    </div>
-    <div class="scroll-content" style="padding:0 16px 20px">
-      <div class="pill-tabs">
-        <div class="pill-tab active">Grand Ballroom</div>
-        <div class="pill-tab">Lotus Banquet</div>
-        <div class="pill-tab">Garden Lawn</div>
-      </div>
-      <div class="dark-card" style="margin:0 0 10px">
-        <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px">Basic Facilities</div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">❄️</div><div><div class="ri-name">Air Conditioning</div><div class="ri-sub">Central AC · Full hall</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">🅿️</div><div><div class="ri-name">Parking</div><div class="ri-sub">300 cars · Valet available</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">⚡</div><div><div class="ri-name">Generator Backup</div><div class="ri-sub">100 KVA · Full backup</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">🛏</div><div><div class="ri-name">Bridal Suite</div><div class="ri-sub">2 rooms · Getting ready area</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">♿</div><div><div class="ri-name">Wheelchair Access</div><div class="ri-sub">Ramp + lift available</div></div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
-      </div>
-      <div class="dark-card" style="margin:0 0 10px">
-        <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px">Tech & AV</div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">💡</div><div><div class="ri-name">LED Screen / Wall</div><div class="ri-sub">20ft LED video wall</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">🎤</div><div><div class="ri-name">Sound System</div><div class="ri-sub">Professional PA system</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">🚁</div><div><div class="ri-name">Drone Allowed</div><div class="ri-sub">Open ceiling · No restrictions</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">📡</div><div><div class="ri-name">WiFi Available</div><div class="ri-sub">High speed · Guest access</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-      </div>
-      <div class="dark-card" style="margin:0 0 10px">
-        <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px">Food & Catering</div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">🍽</div><div><div class="ri-name">In-house Catering</div><div class="ri-sub">Odia + North Indian + Chinese</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">🍸</div><div><div class="ri-name">Bar / Beverages</div><div class="ri-sub">Licensed · Optional</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">👨‍🍳</div><div><div class="ri-name">Outside Caterer OK</div><div class="ri-sub">No restrictions on outside food</div></div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
-      </div>
-      <button class="btn-primary">Save Facilities ✓</button>
-      <div style="height:30px"></div>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showScreen('dashboard')"><div class="nav-ico">🏠</div><div class="nav-lbl">Home</div></div>
-      <div class="nav-item active" onclick="showScreen('venues')"><div class="nav-ico">🏛</div><div class="nav-lbl">Venues</div></div>
-      <div class="nav-item" onclick="showScreen('requests')"><div class="nav-ico">📋</div><div class="nav-lbl">Requests</div></div>
-      <div class="nav-item" onclick="showScreen('earnings')"><div class="nav-ico">₹</div><div class="nav-lbl">Earnings</div></div>
-      <div class="nav-item" onclick="showScreen('profile')"><div class="nav-ico">👤</div><div class="nav-lbl">Profile</div></div>
-    </div>
-  </div>
-
-  <!-- ═══ PHOTOS ═══ -->
-  <div class="screen" id="scr-photos" style="background:var(--M3)">
-    <div class="notch"><div class="notch-pill"><span class="notch-time">9:41</span><span class="notch-icons">📶 🔋</span></div></div>
-    <div class="screen-header">
-      <div class="sh-top">
-        <button class="sh-back" onclick="showScreen('venues')">←</button>
-        <div class="sh-title">Photos & 360°</div>
-        <div style="width:36px"></div>
-      </div>
-      <div class="sh-sub">Grand Ballroom · 8 photos uploaded</div>
-    </div>
-    <div class="scroll-content" style="padding-bottom:20px">
-      <div class="pill-tabs">
-        <div class="pill-tab active">Interior</div>
-        <div class="pill-tab">Exterior</div>
-        <div class="pill-tab">360° Video</div>
-        <div class="pill-tab">During Event</div>
-      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:14px">Grand Ballroom · 8 photos · Shown to customers before booking</div>
       <div class="photo-grid">
         <div class="photo-item" style="background:linear-gradient(135deg,#3A1A2A,#6B2A4A)"><span style="font-size:28px">🏛</span></div>
         <div class="photo-item" style="background:linear-gradient(135deg,#1A3A4A,#2A6A8A)"><span style="font-size:28px">💡</span></div>
@@ -828,293 +740,243 @@ body{font-family:'Outfit',sans-serif;background:#1A1A1A;display:flex;justify-con
         <div class="photo-item" style="background:linear-gradient(135deg,#3A1A1A,#6A3A3A)"><span style="font-size:28px">🍽</span></div>
         <div class="photo-item" style="background:linear-gradient(135deg,#2A1A3A,#5A3A6A)"><span style="font-size:28px">🎤</span></div>
         <div class="photo-item" style="background:linear-gradient(135deg,#1A3A2A,#3A6A5A)"><span style="font-size:28px">🚪</span></div>
-        <div class="photo-item add-photo"><span style="font-size:28px;color:var(--G)">+</span></div>
+        <div class="photo-item photo-add"><span style="font-size:28px;color:var(--G)">+</span></div>
+        <div class="photo-item photo-add"><span style="font-size:28px;color:var(--G)">+</span></div>
       </div>
-      <!-- 360 Video -->
-      <div style="padding:0 16px;margin-bottom:12px">
-        <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:10px">360° Virtual Tour</div>
-        <div style="background:rgba(255,255,255,.07);border:1.5px dashed rgba(201,151,58,.4);border-radius:14px;padding:20px;text-align:center">
-          <div style="font-size:36px;margin-bottom:8px">🎬</div>
-          <div style="font-size:13px;font-weight:600;color:var(--G2);margin-bottom:4px">Upload 360° Video</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:14px;line-height:1.5">Upload a 360° video or paste YouTube/Vimeo link. Shown to customers before booking.</div>
-          <button class="btn-primary" style="margin-bottom:8px">📹 Upload Video</button>
-          <div class="fg" style="margin:0">
-            <input placeholder="Or paste YouTube / Vimeo link">
+      <div class="g2">
+        <div class="card">
+          <div class="card-hd">Upload Photos</div>
+          <div class="fg"><label>Category</label><select><option>Interior</option><option>Exterior</option><option>During Event</option><option>Food Setup</option><option>Decoration</option></select></div>
+          <div style="border:2px dashed rgba(201,151,58,.4);border-radius:12px;padding:28px;text-align:center;margin-bottom:14px;cursor:pointer;background:rgba(201,151,58,.04)" onclick="alert('File upload opens here in the real app')">
+            <div style="font-size:36px;margin-bottom:8px">📷</div>
+            <div style="font-size:13px;font-weight:500;color:var(--G2);margin-bottom:4px">Click to upload photos</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.35)">JPG, PNG up to 10MB each · Multiple allowed</div>
+          </div>
+          <button class="btn-primary" style="width:100%">Upload Selected Photos</button>
+        </div>
+        <div class="card">
+          <div class="card-hd">360° Virtual Tour</div>
+          <div style="border:2px dashed rgba(201,151,58,.4);border-radius:12px;padding:24px;text-align:center;margin-bottom:14px;background:rgba(201,151,58,.04)">
+            <div style="font-size:36px;margin-bottom:8px">🎬</div>
+            <div style="font-size:13px;font-weight:600;color:var(--G2);margin-bottom:4px">Upload 360° Video</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:14px;line-height:1.6">Customers can take a virtual tour before booking. Increases bookings by 40%.</div>
+            <button class="btn-primary" style="margin-bottom:10px;padding:10px 20px">📹 Upload Video</button>
+          </div>
+          <div class="fg"><label>Or paste YouTube / Vimeo Link</label><input placeholder="https://youtube.com/watch?v=..."></div>
+          <button class="btn-secondary" style="width:100%">Save Video Link</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ EARNINGS ══ -->
+    <div class="page" id="pg-earnings">
+      <div style="background:linear-gradient(135deg,var(--M),var(--M3));border-radius:18px;padding:24px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border:1px solid rgba(201,151,58,.2)">
+        <div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Total Revenue FY 2024–25</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;color:var(--G2);line-height:1">₹84.2L</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:6px">▲ 28% vs last financial year</div>
+        </div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap">
+          <div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:4px">ADVANCE RECEIVED</div><div style="font-size:20px;font-weight:700;color:var(--G2)">₹16.8L</div></div>
+          <div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:4px">BALANCE COLLECTED</div><div style="font-size:20px;font-weight:700;color:var(--G2)">₹67.4L</div></div>
+          <div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:4px">PENDING</div><div style="font-size:20px;font-weight:700;color:#F0A0A0">₹8.2L</div></div>
+        </div>
+      </div>
+      <div class="kgrid">
+        <div class="kpi"><div class="kpi-lbl">This Month</div><div class="kpi-val">₹12.4L</div><div class="kpi-delta">▲ 22% · 18 bookings</div><div class="kbar"><div class="kfill" style="width:62%"></div></div></div>
+        <div class="kpi"><div class="kpi-lbl">Avg per Booking</div><div class="kpi-val">₹68K</div><div class="kpi-delta">▲ 12% vs last</div><div class="kbar"><div class="kfill" style="width:45%"></div></div></div>
+        <div class="kpi"><div class="kpi-lbl">Best Month</div><div class="kpi-val">Feb · ₹18.2L</div><div class="kpi-delta">Wedding season peak</div><div class="kbar"><div class="kfill" style="width:100%"></div></div></div>
+        <div class="kpi"><div class="kpi-lbl">Overdue</div><div class="kpi-val" style="color:#F0A0A0">₹8.2L</div><div class="kpi-delta" style="color:#F0A0A0">3 payments overdue</div><div class="kbar"><div class="kfill" style="width:10%;background:var(--ER)"></div></div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-hd">Monthly Revenue (₹ Lakh)</div>
+          <div class="earn-bars" id="earn-bars"></div>
+        </div>
+        <div class="card">
+          <div class="card-hd">Revenue by Venue</div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🎊</div><div><div class="ri-name">Grand Ballroom</div><div class="ri-sub">52 bookings · 50%</div></div></div><div style="font-size:15px;font-weight:700;color:var(--G2)">₹42.1L</div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🌳</div><div><div class="ri-name">Garden Lawn</div><div class="ri-sub">34 bookings · 30%</div></div></div><div style="font-size:15px;font-weight:700;color:var(--G2)">₹25.5L</div></div>
+          <div class="row-item"><div class="ri-left"><div class="ri-ico">🌸</div><div><div class="ri-name">Lotus Banquet</div><div class="ri-sub">28 bookings · 20%</div></div></div><div style="font-size:15px;font-weight:700;color:var(--G2)">₹16.6L</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">Recent Transactions <span class="card-lk">View all →</span></div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>Date</th><th>Couple</th><th>Venue</th><th>Type</th><th>Amount</th><th>Mode</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Apr 27</td><td>Tapan & Mamata</td><td>Grand Ballroom</td><td><span class="b b-ok">Advance</span></td><td style="font-weight:700;color:var(--G2)">₹42,000</td><td>📱 UPI</td><td><span class="b b-ok">Received</span></td></tr>
+              <tr><td>Apr 24</td><td>Priya & Rohan</td><td>Garden Lawn</td><td><span class="b b-bl">Balance</span></td><td style="font-weight:700;color:var(--G2)">₹1,20,000</td><td>🏦 NEFT</td><td><span class="b b-ok">Received</span></td></tr>
+              <tr><td>Apr 20</td><td>Sunita & Amit</td><td>Lotus Banquet</td><td><span class="b b-g">Full Pay</span></td><td style="font-weight:700;color:var(--G2)">₹55,000</td><td>🏦 RTGS</td><td><span class="b b-ok">Received</span></td></tr>
+              <tr><td>Apr 18</td><td>Debasish & Kabita</td><td>Grand Ballroom</td><td><span class="b b-w">Advance</span></td><td style="font-weight:700;color:#F0A0A0">₹35,000</td><td>📱 UPI</td><td><span class="b b-e">Overdue</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PROFILE ══ -->
+    <div class="page" id="pg-profile">
+      <div class="profile-hero">
+        <div class="ph-avatar">ML</div>
+        <div style="flex:1">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:#fff">Mayfair Lagoon Hotel</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;margin-top:4px">HOTEL OWNER · BHUBANESWAR, KHORDHA</div>
+          <div style="display:flex;gap:8px;margin-top:10px"><span class="b b-ok">✓ Verified</span><span class="b b-gold">4-Star Hotel</span></div>
+          <div class="ph-stats">
+            <div class="ph-stat"><div class="ph-val">4.9</div><div class="ph-lbl">Rating ⭐</div></div>
+            <div class="ph-stat"><div class="ph-val">128</div><div class="ph-lbl">Reviews</div></div>
+            <div class="ph-stat"><div class="ph-val">3</div><div class="ph-lbl">Venues</div></div>
+            <div class="ph-stat"><div class="ph-val">114</div><div class="ph-lbl">Bookings</div></div>
           </div>
         </div>
       </div>
-      <div style="height:30px"></div>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showScreen('dashboard')"><div class="nav-ico">🏠</div><div class="nav-lbl">Home</div></div>
-      <div class="nav-item active" onclick="showScreen('venues')"><div class="nav-ico">🏛</div><div class="nav-lbl">Venues</div></div>
-      <div class="nav-item" onclick="showScreen('requests')"><div class="nav-ico">📋</div><div class="nav-lbl">Requests</div></div>
-      <div class="nav-item" onclick="showScreen('earnings')"><div class="nav-ico">₹</div><div class="nav-lbl">Earnings</div></div>
-      <div class="nav-item" onclick="showScreen('profile')"><div class="nav-ico">👤</div><div class="nav-lbl">Profile</div></div>
-    </div>
-  </div>
-
-  <!-- ═══ BOOKING REQUESTS ═══ -->
-  <div class="screen" id="scr-requests" style="background:var(--M3)">
-    <div class="notch"><div class="notch-pill"><span class="notch-time">9:41</span><span class="notch-icons">📶 🔋</span></div></div>
-    <div class="screen-header">
-      <div class="sh-top">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff">Booking Requests</div>
-        <span class="badge b-e">5 New</span>
-      </div>
-    </div>
-    <div class="scroll-content" style="padding-bottom:100px">
-      <div class="pill-tabs">
-        <div class="pill-tab active">New (5)</div>
-        <div class="pill-tab">Confirmed (13)</div>
-        <div class="pill-tab">Completed (48)</div>
-      </div>
-
-      <div class="notif-card urgent">
-        <div class="nc-top">
-          <div class="nc-name">Tapan & Mamata Nayak</div>
-          <div class="nc-time">1 hr ago</div>
+      <div class="g2">
+        <div>
+          <div class="card">
+            <div class="card-hd">Business Details</div>
+            <div class="fg"><label>Business Name</label><input value="Mayfair Lagoon Hotel"></div>
+            <div class="frow2">
+              <div class="fg"><label>Mobile</label><input value="+91 98765 43210"></div>
+              <div class="fg"><label>WhatsApp</label><input value="+91 98765 43210"></div>
+            </div>
+            <div class="frow2">
+              <div class="fg"><label>Category</label><select><option>Hotel</option><option>Mandap</option><option>Banquet Hall</option><option>Open Ground</option></select></div>
+              <div class="fg"><label>District</label><select><option>Khordha</option><option>Cuttack</option><option>Puri</option></select></div>
+            </div>
+            <div class="fg"><label>GST Number</label><input value="21AABCV1234F1Z5"></div>
+            <button class="btn-primary">Save Business Details</button>
+          </div>
         </div>
-        <div class="nc-detail">🎊 Grand Ballroom · May 20, 2025<br>450 guests · Gold Package · 📸 Photography + 🍽 Catering</div>
-        <div class="nc-amount">₹2,10,000 · Advance ₹42,000</div>
-        <div class="nc-actions">
-          <div class="nc-btn nc-accept">✓ Accept</div>
-          <div class="nc-btn nc-reject">✗ Decline</div>
-          <div class="nc-btn nc-wa">💬 WhatsApp</div>
-        </div>
-      </div>
-
-      <div class="notif-card">
-        <div class="nc-top">
-          <div class="nc-name">Suresh & Priya Mohapatra</div>
-          <div class="nc-time">3 hrs ago</div>
-        </div>
-        <div class="nc-detail">🌳 Garden Lawn · Jun 2, 2025<br>600 guests · Silver Package</div>
-        <div class="nc-amount">₹1,40,000 · Advance ₹28,000</div>
-        <div class="nc-actions">
-          <div class="nc-btn nc-accept">✓ Accept</div>
-          <div class="nc-btn nc-reject">✗ Decline</div>
-          <div class="nc-btn nc-wa">💬 WhatsApp</div>
-        </div>
-      </div>
-
-      <div class="notif-card">
-        <div class="nc-top">
-          <div class="nc-name">Bikash & Kabita Das</div>
-          <div class="nc-time">5 hrs ago</div>
-        </div>
-        <div class="nc-detail">🎊 Grand Ballroom · Jun 8, 2025<br>800 guests · Platinum Package + Full Services</div>
-        <div class="nc-amount">₹4,65,000 · Advance ₹93,000</div>
-        <div class="nc-actions">
-          <div class="nc-btn nc-accept">✓ Accept</div>
-          <div class="nc-btn nc-reject">✗ Decline</div>
-          <div class="nc-btn nc-wa">💬 WhatsApp</div>
-        </div>
-      </div>
-
-      <div class="notif-card">
-        <div class="nc-top">
-          <div class="nc-name">Rajesh & Anita Panda</div>
-          <div class="nc-time">Yesterday</div>
-        </div>
-        <div class="nc-detail">🌸 Lotus Banquet · Jun 15, 2025<br>200 guests · Silver Package</div>
-        <div class="nc-amount">₹85,000 · Advance ₹17,000</div>
-        <div class="nc-actions">
-          <div class="nc-btn nc-accept">✓ Accept</div>
-          <div class="nc-btn nc-reject">✗ Decline</div>
-          <div class="nc-btn nc-wa">💬 WhatsApp</div>
-        </div>
-      </div>
-
-      <div class="notif-card">
-        <div class="nc-top">
-          <div class="nc-name">Nirmal & Sunita Behera</div>
-          <div class="nc-time">Yesterday</div>
-        </div>
-        <div class="nc-detail">🎊 Grand Ballroom · Jul 1, 2025<br>500 guests · Gold Package</div>
-        <div class="nc-amount">₹2,57,000 · Advance ₹51,400</div>
-        <div class="nc-actions">
-          <div class="nc-btn nc-accept">✓ Accept</div>
-          <div class="nc-btn nc-reject">✗ Decline</div>
-          <div class="nc-btn nc-wa">💬 WhatsApp</div>
+        <div>
+          <div class="card">
+            <div class="card-hd">App Settings</div>
+            <div class="row-item"><div class="ri-left"><div class="ri-ico">👁</div><div><div class="ri-name">Listed on Vivah Odisha</div><div class="ri-sub">Show venues to customers</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+            <div class="row-item"><div class="ri-left"><div class="ri-ico">📋</div><div><div class="ri-name">Accept Online Bookings</div><div class="ri-sub">Allow customers to book online</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+            <div class="row-item"><div class="ri-left"><div class="ri-ico">💬</div><div><div class="ri-name">WhatsApp Button</div><div class="ri-sub">Show on your listing</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+            <div class="row-item"><div class="ri-left"><div class="ri-ico">🔔</div><div><div class="ri-name">Push Notifications</div><div class="ri-sub">New booking alerts</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+            <div class="row-item"><div class="ri-left"><div class="ri-ico">🌙</div><div><div class="ri-name">Dark Mode</div><div class="ri-sub">Current interface theme</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-hd">Support</div>
+            <div class="row-item" style="cursor:pointer"><div class="ri-left"><div class="ri-ico">📞</div><div><div class="ri-name">Call Support</div><div class="ri-sub">+91 98765 00000</div></div></div><span style="color:rgba(255,255,255,.3)">→</span></div>
+            <div class="row-item" style="cursor:pointer"><div class="ri-left"><div class="ri-ico">💬</div><div><div class="ri-name">WhatsApp Support</div></div></div><span style="color:rgba(255,255,255,.3)">→</span></div>
+          </div>
+          <button class="btn-danger" style="width:100%" onclick="showAuth('splash')">Logout</button>
         </div>
       </div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showScreen('dashboard')"><div class="nav-ico">🏠</div><div class="nav-lbl">Home</div></div>
-      <div class="nav-item" onclick="showScreen('venues')"><div class="nav-ico">🏛</div><div class="nav-lbl">Venues</div></div>
-      <div class="nav-item active" onclick="showScreen('requests')"><div class="nav-ico">📋</div><div class="nav-lbl">Requests</div></div>
-      <div class="nav-item" onclick="showScreen('earnings')"><div class="nav-ico">₹</div><div class="nav-lbl">Earnings</div></div>
-      <div class="nav-item" onclick="showScreen('profile')"><div class="nav-ico">👤</div><div class="nav-lbl">Profile</div></div>
-    </div>
-  </div>
 
-  <!-- ═══ EARNINGS ═══ -->
-  <div class="screen" id="scr-earnings" style="background:var(--M3)">
-    <div class="notch"><div class="notch-pill"><span class="notch-time">9:41</span><span class="notch-icons">📶 🔋</span></div></div>
-    <div class="screen-header">
-      <div class="sh-top">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff">My Earnings</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.4)">FY 2024-25</div>
-      </div>
-    </div>
-    <div class="scroll-content" style="padding-bottom:100px">
-      <!-- Total Revenue Card -->
-      <div style="margin:0 16px 16px;background:linear-gradient(135deg,var(--M),var(--M3));border-radius:18px;padding:22px;text-align:center;border:1px solid rgba(201,151,58,.2)">
-        <div style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Total Revenue FY25</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:700;color:var(--G2);line-height:1">₹84.2L</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:6px">▲ 28% vs last year</div>
-        <div style="display:flex;justify-content:space-around;margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1)">
-          <div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:4px">Advance</div><div style="font-size:15px;font-weight:700;color:var(--G2)">₹16.8L</div></div>
-          <div style="width:1px;background:rgba(255,255,255,.1)"></div>
-          <div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:4px">Balance</div><div style="font-size:15px;font-weight:700;color:var(--G2)">₹67.4L</div></div>
-          <div style="width:1px;background:rgba(255,255,255,.1)"></div>
-          <div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:4px">Pending</div><div style="font-size:15px;font-weight:700;color:#F0A0A0">₹8.2L</div></div>
+    <!-- ══ ADD VENUE ══ -->
+    <div class="page" id="pg-addvenue">
+      <div class="g2">
+        <div>
+          <div class="card">
+            <div class="card-hd">Step 1 — Basic Details</div>
+            <div class="fg"><label>Venue / Hall Name</label><input placeholder="e.g. Grand Ballroom, Lotus Banquet Hall"></div>
+            <div class="fg"><label>Venue Type</label><select><option>AC Hall</option><option>Open Ground / Lawn</option><option>Banquet Hall</option><option>Rooftop Terrace</option><option>Pool Side</option></select></div>
+            <div class="frow2">
+              <div class="fg"><label>Min Guests</label><input type="number" placeholder="50"></div>
+              <div class="fg"><label>Max Guests</label><input type="number" placeholder="600"></div>
+            </div>
+            <div class="frow2">
+              <div class="fg"><label>Floor</label><input placeholder="e.g. Ground Floor"></div>
+              <div class="fg"><label>Area (sq.ft)</label><input type="number" placeholder="4500"></div>
+            </div>
+            <div class="fg"><label>Description</label><textarea placeholder="Describe your venue..."></textarea></div>
+          </div>
         </div>
-      </div>
-
-      <!-- Earn Summary -->
-      <div class="earn-summary">
-        <div class="es-card" style="background:rgba(45,106,63,.2);border:1px solid rgba(45,106,63,.3)">
-          <div class="es-lbl" style="color:var(--OK)">This Month</div>
-          <div class="es-val" style="color:#7AE09A">₹12.4L</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px">18 bookings</div>
-        </div>
-        <div class="es-card" style="background:rgba(201,151,58,.15);border:1px solid rgba(201,151,58,.3)">
-          <div class="es-lbl" style="color:var(--G2)">Avg/Booking</div>
-          <div class="es-val" style="color:var(--G2)">₹68K</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px">▲ 12%</div>
-        </div>
-        <div class="es-card" style="background:rgba(26,58,107,.2);border:1px solid rgba(26,58,107,.3)">
-          <div class="es-lbl" style="color:#9AB8E8">Best Month</div>
-          <div class="es-val" style="color:#9AB8E8">Feb</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px">₹18.2L</div>
-        </div>
-        <div class="es-card" style="background:rgba(139,26,26,.2);border:1px solid rgba(139,26,26,.3)">
-          <div class="es-lbl" style="color:#F0A0A0">Pending</div>
-          <div class="es-val" style="color:#F0A0A0">₹8.2L</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px">3 overdue</div>
-        </div>
-      </div>
-
-      <!-- Chart -->
-      <div class="sec-title">Monthly Revenue (₹ Lakh)</div>
-      <div class="dark-card" style="margin:0 16px 14px">
-        <div class="earn-bar" id="earn-chart"></div>
-      </div>
-
-      <!-- Revenue by Venue -->
-      <div class="sec-title">Revenue by Venue</div>
-      <div class="dark-card" style="margin:0 16px 14px">
-        <div class="row-item">
-          <div class="ri-left"><div class="ri-ico">🎊</div><div><div class="ri-name">Grand Ballroom</div><div class="ri-sub">52 bookings this year</div></div></div>
-          <div style="text-align:right"><div style="font-size:14px;font-weight:700;color:var(--G2)">₹42.1L</div><div style="font-size:9px;color:rgba(255,255,255,.4)">50%</div></div>
-        </div>
-        <div class="row-item">
-          <div class="ri-left"><div class="ri-ico">🌳</div><div><div class="ri-name">Garden Lawn</div><div class="ri-sub">34 bookings this year</div></div></div>
-          <div style="text-align:right"><div style="font-size:14px;font-weight:700;color:var(--G2)">₹25.5L</div><div style="font-size:9px;color:rgba(255,255,255,.4)">30%</div></div>
-        </div>
-        <div class="row-item">
-          <div class="ri-left"><div class="ri-ico">🌸</div><div><div class="ri-name">Lotus Banquet</div><div class="ri-sub">28 bookings this year</div></div></div>
-          <div style="text-align:right"><div style="font-size:14px;font-weight:700;color:var(--G2)">₹16.6L</div><div style="font-size:9px;color:rgba(255,255,255,.4)">20%</div></div>
+        <div>
+          <div class="card">
+            <div class="card-hd">Step 2 — Pricing</div>
+            <div class="fg"><label>Base / Wedding Season Price (₹/day)</label><input type="number" placeholder="e.g. 160000"></div>
+            <div class="fg"><label>Summer Price (₹/day)</label><input type="number" placeholder="e.g. 110000"></div>
+            <div class="fg"><label>Off Season Price (₹/day)</label><input type="number" placeholder="e.g. 80000"></div>
+            <div class="fg"><label>Min Advance Required (%)</label><select><option>20%</option><option>25%</option><option>30%</option><option>50%</option></select></div>
+          </div>
+          <button class="btn-primary" style="width:100%;margin-bottom:10px">Save Venue & Continue →</button>
+          <button class="btn-secondary" style="width:100%" onclick="nav(document.querySelectorAll('.sb-item')[3],'venues')">← Back to My Venues</button>
         </div>
       </div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showScreen('dashboard')"><div class="nav-ico">🏠</div><div class="nav-lbl">Home</div></div>
-      <div class="nav-item" onclick="showScreen('venues')"><div class="nav-ico">🏛</div><div class="nav-lbl">Venues</div></div>
-      <div class="nav-item" onclick="showScreen('requests')"><div class="nav-ico">📋</div><div class="nav-lbl">Requests</div></div>
-      <div class="nav-item active" onclick="showScreen('earnings')"><div class="nav-ico">₹</div><div class="nav-lbl">Earnings</div></div>
-      <div class="nav-item" onclick="showScreen('profile')"><div class="nav-ico">👤</div><div class="nav-lbl">Profile</div></div>
-    </div>
-  </div>
 
-  <!-- ═══ PROFILE ═══ -->
-  <div class="screen" id="scr-profile" style="background:var(--M3)">
-    <div class="notch"><div class="notch-pill"><span class="notch-time">9:41</span><span class="notch-icons">📶 🔋</span></div></div>
-    <div class="scroll-content" style="padding-bottom:100px">
-      <!-- Profile Hero -->
-      <div class="profile-hero">
-        <div class="profile-avatar">ML</div>
-        <div class="profile-name">Mayfair Lagoon Hotel</div>
-        <div class="profile-type">HOTEL OWNER · BHUBANESWAR</div>
-        <span class="badge b-ok" style="margin-top:8px">✓ Verified by Vivah Odisha</span>
-        <div class="profile-stats">
-          <div class="ps-item"><div class="ps-val">4.9</div><div class="ps-lbl">Rating ⭐</div></div>
-          <div class="ps-item"><div class="ps-val">128</div><div class="ps-lbl">Reviews</div></div>
-          <div class="ps-item"><div class="ps-val">3</div><div class="ps-lbl">Venues</div></div>
-          <div class="ps-item"><div class="ps-val">114</div><div class="ps-lbl">Bookings</div></div>
-        </div>
-      </div>
-
-      <!-- Business Info -->
-      <div class="sec-title">Business Details</div>
-      <div class="dark-card" style="margin:0 16px 12px">
-        <div class="info-row"><div class="ir-label">Business Name</div><div style="display:flex;align-items:center;gap:8px"><div class="ir-value">Mayfair Lagoon Hotel</div><div class="ir-edit">Edit</div></div></div>
-        <div class="info-row"><div class="ir-label">Category</div><div class="ir-value">Hotel · 4-Star</div></div>
-        <div class="info-row"><div class="ir-label">Mobile</div><div style="display:flex;align-items:center;gap:8px"><div class="ir-value">+91 98765 43210</div><div class="ir-edit">Edit</div></div></div>
-        <div class="info-row"><div class="ir-label">WhatsApp</div><div style="display:flex;align-items:center;gap:8px"><div class="ir-value">+91 98765 43210</div><div class="ir-edit">Edit</div></div></div>
-        <div class="info-row"><div class="ir-label">District</div><div class="ir-value">Khordha, Bhubaneswar</div></div>
-        <div class="info-row"><div class="ir-label">GST Number</div><div style="display:flex;align-items:center;gap:8px"><div class="ir-value">21AABCV1234F1Z5</div><div class="ir-edit">Edit</div></div></div>
-      </div>
-
-      <!-- App Settings -->
-      <div class="sec-title">App Settings</div>
-      <div class="dark-card" style="margin:0 16px 12px">
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">👁</div><div><div class="ri-name">Listed on Vivah Odisha</div><div class="ri-sub">Show your venues to customers</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">📋</div><div><div class="ri-name">Accept Online Bookings</div><div class="ri-sub">Allow customers to book online</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">💬</div><div><div class="ri-name">WhatsApp Button</div><div class="ri-sub">Show on your listing</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="row-item"><div class="ri-left"><div class="ri-ico">🔔</div><div><div class="ri-name">Push Notifications</div><div class="ri-sub">New booking alerts</div></div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
-      </div>
-
-      <!-- Support & Logout -->
-      <div class="dark-card" style="margin:0 16px 12px">
-        <div class="row-item" style="cursor:pointer"><div class="ri-left"><div class="ri-ico">📞</div><div><div class="ri-name">Call Support</div><div class="ri-sub">+91 98765 00000</div></div></div><div style="color:rgba(255,255,255,.3)">→</div></div>
-        <div class="row-item" style="cursor:pointer"><div class="ri-left"><div class="ri-ico">💬</div><div><div class="ri-name">WhatsApp Support</div><div class="ri-sub">Chat with Vivah Odisha team</div></div></div><div style="color:rgba(255,255,255,.3)">→</div></div>
-        <div class="row-item" style="cursor:pointer"><div class="ri-left"><div class="ri-ico">📄</div><div><div class="ri-name">Terms & Privacy Policy</div></div></div><div style="color:rgba(255,255,255,.3)">→</div></div>
-      </div>
-
-      <div style="padding:0 16px;margin-bottom:16px">
-        <button class="btn-danger" onclick="showScreen('splash')">Logout</button>
-      </div>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item" onclick="showScreen('dashboard')"><div class="nav-ico">🏠</div><div class="nav-lbl">Home</div></div>
-      <div class="nav-item" onclick="showScreen('venues')"><div class="nav-ico">🏛</div><div class="nav-lbl">Venues</div></div>
-      <div class="nav-item" onclick="showScreen('requests')"><div class="nav-ico">📋</div><div class="nav-lbl">Requests</div></div>
-      <div class="nav-item" onclick="showScreen('earnings')"><div class="nav-ico">₹</div><div class="nav-lbl">Earnings</div></div>
-      <div class="nav-item active" onclick="showScreen('profile')"><div class="nav-ico">👤</div><div class="nav-lbl">Profile</div></div>
-    </div>
-  </div>
-
-  </div><!-- phone-inner end -->
-</div><!-- phone end -->
-
-</div><!-- outer flex end -->
+    </div><!-- page-content -->
+  </div><!-- main -->
+</div><!-- app-shell -->
 
 <script>
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const s = document.getElementById('scr-' + id);
-  if(s) s.classList.add('active');
-  // scroll to top
-  s?.querySelectorAll('.scroll-content').forEach(c => c.scrollTop = 0);
+const titles = {
+  dashboard:'Dashboard', venues:'My Venues', requests:'Booking Requests',
+  calendar:'Availability Calendar', pricing:'Seasonal Pricing',
+  facilities:'Facilities', photos:'Photos & 360°', earnings:'My Earnings',
+  profile:'Profile & Settings', addvenue:'Add New Venue'
+};
+
+function nav(el, pg) {
+  document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const p = document.getElementById('pg-' + pg);
+  if(p) { p.classList.add('active'); p.parentElement.scrollTop = 0; }
+  document.getElementById('page-title').textContent = titles[pg] || pg;
+  closeSidebar();
 }
 
-// Earnings Chart
-window.addEventListener('DOMContentLoaded', () => {
-  const ec = document.getElementById('earn-chart');
-  if(ec) {
-    const months = ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
-    const vals = [4.2,5.1,3.8,4.5,5.2,3.9,6.1,9.8,11.2,14.5,18.2,8.4];
-    const max = Math.max(...vals);
-    ec.innerHTML = months.map((m,i) => `
-      <div class="eb-wrap">
-        <div class="eb-bar" style="height:${Math.round(vals[i]/max*65)}px;background:${vals[i]===max?'var(--G2)':'rgba(201,151,58,0.6)'}"></div>
-        <div class="eb-lbl">${m}</div>
-      </div>
-    `).join('');
-  }
+function showAuth(screen) {
+  document.querySelectorAll('.auth-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('auth-' + screen).classList.add('active');
+  document.getElementById('app-shell').style.display = 'none';
+}
+
+function enterApp() {
+  document.querySelectorAll('.auth-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('app-shell').style.display = 'flex';
+  buildEarnChart();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').style.display =
+    document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none';
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').style.display = 'none';
+}
+
+function buildEarnChart() {
+  const el = document.getElementById('earn-bars');
+  if(!el || el.innerHTML) return;
+  const months = ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+  const vals   = [4.2,5.1,3.8,4.5,5.2,3.9,6.1,9.8,11.2,14.5,18.2,8.4];
+  const max    = Math.max(...vals);
+  el.innerHTML = months.map((m,i) => `
+    <div class="eb-col">
+      <div class="eb-bar${vals[i]===max?' peak':''}" style="height:${Math.round(vals[i]/max*80)}px"></div>
+      <div class="eb-lbl">${m}</div>
+    </div>`).join('');
+}
+
+// Pill tab switching
+document.querySelectorAll('.pill-row').forEach(row => {
+  row.querySelectorAll('.pill').forEach(pill => {
+    pill.onclick = () => {
+      row.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    };
+  });
+});
+
+// Tab switching
+document.querySelectorAll('.tabs').forEach(tabs => {
+  tabs.querySelectorAll('.tab').forEach(tab => {
+    tab.onclick = () => {
+      tabs.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    };
+  });
 });
 </script>
 </body>
